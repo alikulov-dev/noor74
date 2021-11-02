@@ -1,4 +1,4 @@
-# userService/Dockerfile
+# backend/Dockerfile
 
 FROM node:14
 

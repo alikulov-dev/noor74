@@ -2,20 +2,19 @@ const jwt = require("jsonwebtoken");
 
 const config = "123456";
 
-const verifyToken = (req, res, next) => {
-  const token =
-    req.body.token || req.query.token || req.headers["x-access-token"];
-
-  if (!token) {
-    return res.status(403).send("A token is required for authentication");
-  }
+const verifyToken = (req, res, next) =>{
+  const token = req.header('x-auth-header'); if (!token) return res.status(401).send('Access Denied: No Token Provided!');
   try {
-    const decoded = jwt.verify(token, config);
-    req.user = decoded;
-  } catch (err) {
-    return res.status(401).send("Invalid Token");
+      const decoded = jwt.verify(token, config); if (role[decoded.role].find(function (url) { return url == req.baseUrl })) {
+          req.user = decoded
+          next();
+      }
+      else
+          return res.status(401).send('Access Denied: You dont have correct privilege to perform this operation');
   }
-  return next();
+  catch (ex) {
+      res.status(401).send('Invalid Token')
+  }
 };
 
 module.exports = verifyToken;
