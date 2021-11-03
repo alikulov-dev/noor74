@@ -59,7 +59,7 @@ router.post("/register", async (req, res) => {
 
     // Create token
     const token = jwt.sign(
-      { client_id: client._id, email },
+      { client_id: client._id, role:client.role },
       "123456",
       {
         expiresIn: "2h",
@@ -92,7 +92,7 @@ router.post("/login", async (req, res) => {
     if (client && (await bcrypt.compare(password, client.password))) {
       // Create token
       const token = jwt.sign(
-        { client_id: client._id, email },
+        { client_id: client._id, role:client.role },
         "123456",
         {
           expiresIn: "2h",

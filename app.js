@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const http = require('http');
+const auth=require('./middleware/auth')
 // const multer = require('multer');
 // const img=require('./db/models/img')
 
@@ -23,9 +24,9 @@ app.use('/uploads', express.static(__dirname + '/uploads'));
 
 
 // app.use(taskRoutes);
-app.use('/img', img_routes);
+app.use('/img',auth, img_routes);
 app.use('/client', client_routes);
-app.use('/welcome', (res, req) => {
+app.use('/welcome', (req, res) => {
     res.json({ name: "Hello" })
 })
 
