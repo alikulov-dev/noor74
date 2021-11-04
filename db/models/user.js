@@ -1,6 +1,30 @@
 const mongoose = require("mongoose");
 
+const imgSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    // required: [false, 'Please, write your name at least'],
+    trim: true,
+    min: 4,
+    max: 25
+  },
+  url: {
+    type: String,
+    required: [false, 'Please, write your name at least'],
+    trim: true,
+    min: 4,
+    max: 25
+  }
+});
+
 const userSchema = new mongoose.Schema({
+  username: {
+    type: String,
+    // required: [true, 'Please, write your name at least'],
+    trim: true,
+    min: 4,
+    max: 25
+  },
   first_name: {
     type: String,
     required: [true, 'Please, write your name at least'],
@@ -26,11 +50,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     trim: true,
     lowercase: true,
-    unique: true,
-    required: 'Email address is required',
-    validate: [validateEmail, 'Please fill a valid email address'],
-    match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
+    // unique: true,
+    // required: 'Email address is required',
+    // validate: [validateEmail, 'Please fill a valid email address'],
+    // match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
   },
+  img: [imgSchema],
   phone: {
     type: String,
     trim: true,
@@ -44,17 +69,21 @@ const userSchema = new mongoose.Schema({
       },
       message: props => `${props.value} is not a valid phone number!`
     },
-    required: [true, 'Admin phone number required'],
+    // required: [true, 'Admin phone number required'],
     min: 7,
     max: 20
   },
   password: {
-    type: String
+    type: String,
+    required: true,
+    trim: true,
+    min: 4
   },
+  last_login: { type: Date, default: Date.now },
   role: {
     type: String,
     enum: {
-      values: ['Admin', 'Super_Admin'],
+      values: ['admin', 'superAdmin'],
       message: '{VALUE} is not supported'
     }
   },
@@ -62,6 +91,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     min: 4
   },
+}, { timestamps: true });
+
+userSchema.virtual('fullName').get(function () {
+  return this.first_name + ' ' + this.last_name;
 });
 
-module.exports = mongoose.model("user", userSchema);
+userSchema.index({ email: 1 }); // schema level
+
+module.exports = mongoose.model("User", userSchema);

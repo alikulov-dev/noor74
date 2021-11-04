@@ -1,30 +1,31 @@
 const mongoose = require("mongoose");
 
-const imgSchema = new mongoose.Schema({ 
-  name: {
-    type: String,
-    required: [false, 'Please, write your name at least'],
-    trim: true,
-    min: 4,
-    max: 25
-  },
-  url: {
-    type: String,
-    required: [false, 'Please, write your name at least'],
-    trim: true,
-    min: 4,
-    max: 25
-  }
-});
+const imgSchema = new mongoose.Schema({
+    name: {
+      type: String,
+      // required: [false, 'Please, write your name at least'],
+      trim: true,
+      min: 4,
+      max: 25
+    },
+    url: {
+      type: String,
+      required: [false, 'Please, write your name at least'],
+      trim: true,
+      min: 4,
+      max: 25
+    }
+  });
 
 const clientSchema = new mongoose.Schema({
-  username: {
+  name: {
     type: String,
     // required: [true, 'Please, write your name at least'],
     trim: true,
     min: 4,
     max: 25
   },
+  img: [imgSchema],
   first_name: {
     type: String,
     required: [true, 'Please, write your name at least'],
@@ -55,7 +56,6 @@ const clientSchema = new mongoose.Schema({
     // validate: [validateEmail, 'Please fill a valid email address'],
     // match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
   },
-  img: [imgSchema],
   phone: {
     type: String,
     trim: true,

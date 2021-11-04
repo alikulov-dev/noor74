@@ -5,6 +5,7 @@
     "main": "./app.js",
     "scripts": {
         "start": "nodemon ./app.js",
+        "swagger-autogen": "node ./docs/swagger.js",
         "dev": "PORT=8626 nodemon ./app.js"
     },
     "author": "Aliqulov Azamat <aliqulov@azamat@list.ru>",
@@ -16,6 +17,7 @@
     "dependencies": {
         "bcrypt": "^5.0.1",
         "body-parser": "^1.19.0",
+        "cors": "^2.8.5",
         "dotenv": "^10.0.0",
         "express": "^4.17.1",
         "http": "0.0.1-security",
@@ -24,6 +26,8 @@
         "mongoose": "^6.0.12",
         "morgan": "^1.10.0",
         "multer": "^1.4.3",
-        "path": "^0.12.7"
+        "path": "^0.12.7",
+        "swagger-autogen": "^2.12.5",
+        "swagger-ui-express": "^4.1.6"
     }
 }

@@ -1,14 +1,17 @@
 require('./db/database')
 const express = require("express");
+const cors = require('cors');
 const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const http = require('http');
-const auth=require('./middleware/auth')
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./docs/swagger_output.json');
 // const multer = require('multer');
 // const img=require('./db/models/img')
 
 // routers
+const auth=require('./middleware/auth')
 const client_routes = require('./router/client_auth')
 const img_routes = require('./router/img')
 
@@ -16,54 +19,23 @@ const img_routes = require('./router/img')
 dotenv.config();
 const app = express();
 const PORT = process.env.NODE_PORT || 8080;
-// app.use(morgan("dev"));
-app.use(morgan('dev'))
+app.use(morgan("dev"));
+app.use(cors());
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+// app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
+// require('./docs/endpoints')(app)
+// app.use(morgan('combined'))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/uploads', express.static(__dirname + '/uploads'));
 
 
 // app.use(taskRoutes);
-app.use('/img',auth, img_routes);
+app.use('/image',auth, img_routes);
 app.use('/client', client_routes);
 app.use('/welcome', (req, res) => {
     res.json({ name: "Hello" })
 })
-
-
-// var storage = multer.diskStorage({
-//     destination: function (req, file, cb) {
-//         cb(null, 'uploads')
-//     },
-//     filename: function (req, file, cb) {
-//         cb(null, new Date().toISOString() + file.originalname)
-//     }
-// })
-
-// var upload = multer({ storage: storage })
-// app.post('/upload', upload.single('myFile'), async (req, res, next) => {
-//     const file = req.file
-//     if (!file) {
-//         const error = new Error('Please upload a file')
-//         error.httpStatusCode = 400
-//         return next("hey error")
-//     }
-
-
-//     const imagepost = new img({
-//         image: file.path
-//     })
-//     const savedimage = await imagepost.save()
-//     res.json(savedimage)
-
-// })
-
-// app.get('/image', async (req, res) => {
-//     const image = await img.find()
-//     res.json(image)
-
-// })
-
 
 app.listen(PORT, (err) => {
     if (err) { console.log(`Error:${err}`) }

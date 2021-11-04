@@ -13,7 +13,7 @@ var storage = multer.diskStorage({
 })
 
 var upload = multer({ storage: storage })
-router.post('/upload', upload.single('myFile'), async (req, res, next) => {
+router.post('/', upload.single('myFile'), async (req, res, next) => {
     const file = req.file
     if (!file) {
         const error = new Error('Please upload a file')
@@ -31,7 +31,7 @@ router.post('/upload', upload.single('myFile'), async (req, res, next) => {
 
 })
 
-router.get('/image', async (req, res) => {
+router.get('/list', async (req, res) => {
     const image = await img.find()
     res.json(image)
 
