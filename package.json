@@ -1,0 +1,24 @@
+{
+    "name": "NOOR_service",
+    "version": "1.0.0",
+    "description": "Blogging website",
+    "main": "./app.js",
+    "scripts": {
+        "start": "nodemon ./app.js",
+        "dev": "PORT=8626 nodemon ./app.js"
+    },
+    "author": "Aliqulov Azamat <aliqulov@azamat@list.ru>",
+    "license": "MIT",
+    "private": false,
+    "devDependencies": {
+        "nodemon": "^2.0.13"
+    },
+    "dependencies": {
+        "body-parser": "^1.19.0",
+        "dotenv": "^10.0.0",
+        "express": "^4.17.1",
+        "http": "0.0.1-security",
+        "mongoose": "^6.0.12",
+        "morgan": "^1.10.0"
+    }
+}

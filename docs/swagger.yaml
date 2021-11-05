@@ -1,0 +1,7265 @@
+openapi: 3.0.0
+servers:
+  - url: 'http://localhost:5000/api'
+    description: With nginx proxy
+  - url: 'https://migration.track.uz/api'
+    description: With nginx proxy
+info:
+  description: Labour Migration NodeJS-CRUD-REST-API
+  version: 1.0.0
+  title: Labour Migration API Documentation 
+  license: {}
+host: 'http://localhost:5000/api'
+basePath: '/'
+schemes:
+  - /api
+paths:
+  '/application/company':
+    get:
+      description: API for getting all applications belongs to company
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - application
+      summary: Get specific application
+      parameters:
+        - schema:
+            type: number
+            minimum: 1
+            default: 1
+          description: page
+          name: page
+          in: query
+        - schema:
+            type: number
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: limit
+          name: limit
+          in: query
+      responses:
+          '200':
+            description: Success
+            schema:
+              $ref: '#/definitions/models.GeneralResponseModel' 
+          # These two error responses have the same schema
+          '400':
+            description: Bad request
+            schema:
+              $ref: '#/definitions/models.ResponseError'
+          '404':
+            description: Not found
+            schema:
+              $ref: '#/definitions/models.ResponseError'
+  '/application/expert':
+    get:
+      description: API for getting all applications belongs to foreign expert
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - application
+      summary: Get all applications belongs to foreign expert
+      parameters:
+        - schema:
+            type: number
+            minimum: 1
+            default: 1
+          description: page
+          name: page
+          in: query
+        - schema:
+            type: number
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: limit
+          name: limit
+          in: query
+      responses:
+          '200':
+            description: Success
+            schema:
+              $ref: '#/definitions/models.GeneralResponseModel' 
+          # These two error responses have the same schema
+          '400':
+            description: Bad request
+            schema:
+              $ref: '#/definitions/models.ResponseError'
+          '404':
+            description: Not found
+            schema:
+              $ref: '#/definitions/models.ResponseError'
+  '/application/new':
+    get:
+      description: API for getting all new applications
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - application
+      summary: Get specific new applications
+      parameters:
+        - schema:
+            type: number
+            minimum: 1
+            default: 1
+          description: page
+          name: page
+          in: query
+        - schema:
+            type: number
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: limit
+          name: limit
+          in: query
+      responses:
+          '200':
+            description: Success
+            schema:
+              $ref: '#/definitions/models.GeneralResponseModel' 
+          # These two error responses have the same schema
+          '400':
+            description: Bad request
+            schema:
+              $ref: '#/definitions/models.ResponseError'
+          '404':
+            description: Not found
+            schema:
+              $ref: '#/definitions/models.ResponseError'
+  '/application/apps':
+    get:
+      description: API for getting all applications belongs to company or foreign expert
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - application
+      summary: Get all applications belongs to company or foreign expert
+      parameters:
+        - schema:
+            type: string
+            format: uuid
+          description: company_id
+          name: company_id
+          in: query
+        - schema:
+            type: string
+            format: uuid
+          description: foreign_expert_id
+          name: foreign_expert_id
+          in: query
+        - schema:
+            type: number
+            minimum: 1
+            default: 1
+          description: page
+          name: page
+          in: query
+        - schema:
+            type: number
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: limit
+          name: limit
+          in: query
+      responses:
+          '200':
+            description: Success
+            schema:
+              $ref: '#/definitions/models.GeneralResponseModel' 
+          # These two error responses have the same schema
+          '400':
+            description: Bad request
+            schema:
+              $ref: '#/definitions/models.ResponseError'
+          '404':
+            description: Not found
+            schema:
+              $ref: '#/definitions/models.ResponseError'
+  /company-details: 
+    get:
+      description: API to get all details about one company from system
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Checking existance
+      summary: API to get all details about one company from system
+      parameters:
+        - schema:
+            type: string
+            minimum: 8
+            maximum: 9
+          description: inn
+          name: inn
+          in: query
+        - schema:
+            type: string
+            minimum: 1
+            maximum: 20
+          description: account_number
+          name: account_number
+          in: query
+        - schema:
+            type: string
+            minimum: 4
+            maximum: 9
+          description: oked
+          name: oked
+          in: query
+        - schema:
+            type: string
+            minimum: 1
+            maximum: 20
+          description: mfo
+          name: mfo
+          in: query
+        - schema:
+            type: string
+            minimum: 1
+            maximum: 20
+          description: certificate_number
+          name: certificate_number
+          in: query
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralGetOneResponseModel'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /expert-details: 
+    get:
+      description: API to get all details about one foreign expert from system
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Checking existance
+      summary: API to get all details about one foreign expert from system
+      parameters:
+        - schema:
+            type: string
+            minimum: 4
+            maximum: 15
+          description: passport_number
+          name: passport_number
+          in: query
+        - schema:
+            type: string
+            minimum: 4
+            maximum: 20
+          description: visa_number
+          name: visa_number
+          in: query
+        - schema:
+            type: string
+            minimum: 4
+            maximum: 9
+          description: passport_fullname
+          name: passport_fullname
+          in: query
+        - schema:
+            type: string
+            minimum: 3
+            maximum: 15
+          description: certificate_number
+          name: certificate_number
+          in: query
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralGetOneResponseModel'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /company:
+    get:
+      description: API for getting all company available on the system
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - company
+      summary: Get all company in the system
+      parameters:
+        - schema:
+            type: number
+            minimum: 1
+            default: 1
+          description: page
+          name: page
+          in: query
+        - schema:
+            type: number
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: limit
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetAllCompaniesResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  '/company/{id}':
+    put:
+      description: API for updating company details
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - company
+      summary: Update company details
+      parameters:
+        - in: path
+          name: Company id   # Note the name is the same as in the path
+          required: true
+          schema:
+            type: string
+            format: uuid
+            minimum: 1
+          description: The Company ID
+        - description: Company
+          name: Company
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.CompanyModel'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UpdateCompanyResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+    get:
+      description: API for getting specific company
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - company
+      summary: Get specific company
+      parameters:
+        - schema: 
+            type: integer
+            minimum: 1
+          description: id
+          name: id
+          in: path
+          required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetCompanyResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /certificate:
+    get:
+      description: API for getting all certificate available on the system
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - certificate
+      summary: Get all certificate in the system
+      parameters:
+        - schema:
+            type: number
+            minimum: 1
+            default: 1
+          description: page
+          name: page
+          in: query
+        - schema:
+            type: number
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: limit
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetAllCompaniesResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+    post:
+      description: API for creating certificate
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - certificate
+      summary: Create a new certificate
+      parameters:
+        - description: certificate
+          name: certificate
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.CertificateModel'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralCreateResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  '/certificate/{id}':
+    put:
+      description: API for updating certificate details
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - certificate
+      summary: Update certificate details
+      parameters:
+        - in: path
+          name: certificate id   # Note the name is the same as in the path
+          required: true
+          schema:
+            type: string
+            format: uuid
+            minimum: 1
+          description: The certificate ID
+        - description: certificate
+          name: certificate
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.CertificateModel'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralCreateResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+    get:
+      description: API for getting specific certificate
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - certificate
+      summary: Get specific certificate
+      parameters:
+        - schema: 
+            type: string
+            format: uuid
+            minimum: 1
+          description: id
+          name: id
+          in: path
+          required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralGetOneResponseModel'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /charter:
+    get:
+      description: API for getting all charter available on the system
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - charter
+      summary: Get all charter in the system
+      parameters:
+        - schema:
+            type: number
+            minimum: 1
+            default: 1
+          description: page
+          name: page
+          in: query
+        - schema:
+            type: number
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: limit
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetAllCompaniesResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+    post:
+      description: API for creating charter
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - charter
+      summary: Create a new charter
+      parameters:
+        - description: charter
+          name: charter
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.CharterModel'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralCreateResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  '/charter/{id}':
+    put:
+      description: API for updating charter details
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - charter
+      summary: Update charter details
+      parameters:
+        - in: path
+          name: charter id   # Note the name is the same as in the path
+          required: true
+          schema:
+            type: string
+            format: uuid
+            minimum: 1
+          description: The charter ID
+        - description: charter
+          name: charter
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.CharterModel'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralCreateResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+    get:
+      description: API for getting specific charter
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - charter
+      summary: Get specific charter
+      parameters:
+        - schema: 
+            type: string
+            format: uuid
+            minimum: 1
+          description: id
+          name: id
+          in: path
+          required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralGetOneResponseModel'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /country:
+    get:
+      description: API for getting all country available on the system
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - country
+      summary: Get all country in the system
+      parameters:
+        - schema:
+            type: number
+            minimum: 1
+            default: 1
+          description: page
+          name: page
+          in: query
+        - schema:
+            type: number 
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: limit
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetAllCountriesResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+    post:
+      description: API for creating country
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - country
+      summary: Create a new country
+      parameters:
+        - description: country
+          name: country
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.CountryModel'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CreateCountryResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  '/country/{id}':
+    put:
+      description: API for updating country details
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - country
+      summary: Update country details
+      parameters:
+        - in: path
+          name: id   # Note the name is the same as in the path
+          required: true
+          schema:
+            type: string
+            format: uuid
+            minimum: 1
+          description: The application ID
+        - description: Application
+          name: application
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.CountryModel'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UpdateCountryResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  '/country/search':  
+    get:
+      description: API for getting specific country
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - country
+      summary: Get specific country
+      parameters:
+        - schema: 
+            type: string
+            minimum: 1
+          description: Country name 
+          name: name
+          in: path
+          required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetCountryResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /currency:
+    get:
+      description: API for getting all currency available on the system
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - currency
+      summary: Get all currency in the system
+      parameters:
+        - schema:
+            type: number
+            minimum: 1
+            default: 1
+          description: page
+          name: page
+          in: query
+        - schema:
+            type: number
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: limit
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetAllCompaniesResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+    post:
+      description: API for creating currency
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - currency
+      summary: Create a new currency
+      parameters:
+        - description: currency
+          name: currency
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.CurrencyModel'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralCreateResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  '/currency/{id}':
+    put:
+      description: API for updating currency details
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - currency
+      summary: Update currency details
+      parameters:
+        - in: path
+          name: currency id   # Note the name is the same as in the path
+          required: true
+          schema:
+            type: string
+            format: uuid
+            minimum: 1
+          description: The currency ID
+        - description: currency
+          name: currency
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.CurrencyModel'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralCreateResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+    get:
+      description: API for getting specific currency
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - currency
+      summary: Get specific currency
+      parameters:
+        - schema: 
+            type: string
+            format: uuid
+            minimum: 1
+          description: id
+          name: id
+          in: path
+          required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralGetOneResponseModel'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /okonx:
+    get:
+      description: API for getting all okonx available on the system
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - okonx
+      summary: Get all okonx in the system
+      parameters:
+        - schema:
+            type: number
+            minimum: 1
+            default: 1
+          description: page
+          name: page
+          in: query
+        - schema:
+            type: number
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: limit
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetAllCompaniesResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+    post:
+      description: API for creating okonx
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - okonx
+      summary: Create a new okonx
+      parameters:
+        - description: okonx
+          name: okonx
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.OkonxModel'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralCreateResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  '/okonx/{id}':
+    put:
+      description: API for updating okonx details
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - okonx
+      summary: Update okonx details
+      parameters:
+        - in: path
+          name: okonx id   # Note the name is the same as in the path
+          required: true
+          schema:
+            type: string
+            format: uuid
+            minimum: 1
+          description: The okonx ID
+        - description: okonx
+          name: okonx
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.OkonxModel'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.OkonxModel'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+    get:
+      description: API for getting specific okonx
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - okonx
+      summary: Get specific okonx
+      parameters:
+        - schema: 
+            type: integer
+            minimum: 1
+          description: id
+          name: id
+          in: path
+          required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralGetOneResponseModel'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /refusal:
+    get:
+      description: API for creating refusal
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - refusal
+      summary: Create a new refusal
+      parameters:
+        - description: refusal
+          name: refusal
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.RefusalModel'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralCreateResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+    post:
+      description: API for creating refusal
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - refusal
+      summary: Create a new refusal
+      parameters:
+        - description: refusal
+          name: refusal
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.RefusalModel'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralCreateResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  '/refusal/{id}':
+    put:
+      description: API for updating refusal details
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - refusal
+      summary: Update refusal details
+      parameters:
+        - in: path
+          name: refusal id   # Note the name is the same as in the path
+          required: true
+          schema:
+            type: string
+            format: uuid
+            minimum: 1
+          description: The refusal ID
+        - description: refusal
+          name: refusal
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.RefusalModel'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralCreateResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+    get:
+      description: API for getting specific refusal
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - refusal
+      summary: Get specific refusal
+      parameters:
+        - schema: 
+            type: string
+            format: uuid
+            minimum: 1
+          description: id
+          name: id
+          in: path
+          required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralGetOneResponseModel'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /foreign-expert:
+    get:  
+      description: API for getting all foreign_expert available on the system
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - expert
+      summary: Get all foreign_expert in the system
+      parameters:
+        - schema:
+            type: number
+            minimum: 1
+            default: 1
+          description: page
+          name: page
+          in: query
+        - schema:
+            type: number
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: limit
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetAllForeignExpertsResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+    post:
+      description: API for creating foreign_expert
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      tags:
+        - expert
+      summary: Create a new foreign_expert
+      parameters:
+        - description: foreign_expert
+          name: foreign_expert
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.ForeignExpertModel'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CreateForeignExpertResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  '/company-experts/{company_id}':  
+    get:  
+      description: API to download all pdf files that belong to foreign expert 
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - expert
+      summary: API to download all pdf files that belong to foreign expert 
+      parameters:
+        - schema:
+            type: string
+            format: uuid
+          description: company_id
+          name: company_id
+          in: query
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetAllForeignExpertsResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  '/foreign-expert/download':  
+    get:  
+      description: API to download all pdf files that belong to foreign expert 
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - expert
+      summary: API to download all pdf files that belong to foreign expert 
+      parameters:
+        - schema:
+            type: string
+            format: uuid
+          description: uuid
+          name: uuid
+          in: query
+        - type:
+            type: string
+          description: type
+          name: type
+          in: query
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetAllForeignExpertsResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  '/foreign-expert/{id}':
+    put:
+      description: API for updating foreign_expert details
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      tags:
+        - expert
+      summary: Update foreign_expert details
+      parameters:
+        - in: path
+          name: Foreign expert id   # Note the name is the same as in the path
+          required: true
+          schema:
+            type: string
+            format: uuid
+            minimum: 1
+          description: The foreign expert ID
+        - description: Application
+          name: foreign expert
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.ForeignExpertModel'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UpdateForeignExpertResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /certificates-pdf:
+    get:
+      description: API to get Weekly/Monthly reports
+      consumes:
+        - application/json
+      produces:
+        - application/pdf
+      tags:
+        - Reports
+      summary: Weekly/Monthly reports on 
+      parameters:
+        - schema:
+            type: number
+            minimum: 1
+            default: 1
+          description: page
+          name: page
+          in: query
+        - schema:
+            type: number
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: limit
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralReportResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /cancelled-applications-excel:
+    get:
+      description: API to get Weekly/Monthly reports
+      consumes:
+        - application/json
+      produces:
+        - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+      tags:
+        - Reports
+      summary: Weekly/Monthly reports on 
+      parameters:
+        - schema:
+            type: number
+            minimum: 1
+            default: 1
+          description: page
+          name: page
+          in: query
+        - schema:
+            type: number
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: limit
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralReportResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /job-report-excel:
+    get:
+      description: API to get Weekly/Monthly reports
+      consumes:
+        - application/json
+      produces:
+        - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+      tags:
+        - Reports
+      summary: Weekly/Monthly reports on 
+      parameters:
+        - schema:
+            type: number
+            minimum: 1
+            default: 1
+          description: page
+          name: page
+          in: query
+        - schema:
+            type: number
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: limit
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralReportResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /permissions-and-confirmations-excel:
+    get:
+      description: API to get Weekly/Monthly reports
+      consumes:
+        - application/json
+      produces:
+        - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+      tags:
+        - Reports
+      summary: Weekly/Monthly reports on 
+      parameters:
+        - schema:
+            type: number
+            minimum: 1
+            default: 1
+          description: page
+          name: page
+          in: query
+        - schema:
+            type: number
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: limit
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralReportResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /permissions-and-confirmations-for-countries-excel:
+    get:
+      description: API to get Weekly/Monthly reports
+      consumes:
+        - application/json
+      produces:
+        - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+      tags:
+        - Reports
+      summary: Weekly/Monthly reports on 
+      parameters:
+        - schema:
+            type: number
+            minimum: 1
+            default: 1
+          description: page
+          name: page
+          in: query
+        - schema:
+            type: number
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: limit
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralReportResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /foreign-citizens-distribution-excel:
+    get:
+      description: API to get Weekly/Monthly reports
+      consumes:
+        - application/json
+      produces:
+        - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+      tags:
+        - Reports
+      summary: Weekly/Monthly reports on 
+      parameters:
+        - schema:
+            type: number
+            minimum: 1
+            default: 1
+          description: page
+          name: page
+          in: query
+        - schema:
+            type: number
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: limit
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralReportResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /central-bank-excel:
+    get:
+      description: API to get Weekly/Monthly reports
+      consumes:
+        - application/json
+      produces:
+        - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+      tags:
+        - Reports
+      summary: Weekly/Monthly reports on 
+      parameters:
+        - schema:
+            type: number
+            minimum: 1
+            default: 1
+          description: page
+          name: page
+          in: query
+        - schema:
+            type: number
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: limit
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralReportResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /region:
+    get:
+      description: API for getting all region available on the system
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - region
+      summary: Get all region in the system
+      parameters:
+        - schema:
+            type: number
+            minimum: 1
+            default: 1
+          description: page
+          name: page
+          in: query
+        - schema:
+            type: number
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: limit
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/GetAllRegionResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+    post:
+      description: API for creating region
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - region
+      summary: Create a new region
+      parameters:
+        - description: region
+          name: region
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.RegionModel'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CreateRegionResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  '/region/{id}':
+    put:
+      description: API for updating region details
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - region
+      summary: Update region details
+      parameters:
+        - in: path
+          name: id   # Note the name is the same as in the path
+          required: true
+          schema:
+          type: integer
+          minimum: 1
+          description: The Region ID
+        - description: Region id
+          name: Region
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.RegionModel'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UpdateRegionResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+    get:
+      description: API for getting specific region
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - region
+      summary: Get specific region
+      parameters:
+        - schema: 
+            type: integer
+            minimum: 1
+          description: id
+          name: id
+          in: path
+          required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetRegionResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /user/all:
+    get:
+      description: API for getting all user available on the system
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - user
+      summary: Get all user in the system
+      parameters:
+        - schema:
+            type: number
+            minimum: 1
+            default: 1
+          description: page
+          name: page
+          in: query
+        - schema:
+            type: number
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: limit
+          name: limit
+          in: query
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetAllUsersResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /auth:
+      get:
+        description: API for getting all users
+        consumes:
+          - application/json
+        produces:
+          - application/json
+        tags:
+          - auth
+        summary: API to get all users
+        parameters:
+        - schema:
+            type: number
+            minimum: 1
+            default: 1
+          description: page
+          name: page
+          in: query
+        - schema:
+            type: number 
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: limit
+          name: limit
+          in: query
+        responses:
+          '200':
+            description: OK
+            schema:
+              $ref: '#/definitions/models.GeneralMyGovResponse'
+          '404':
+            description: Not Found
+            schema:
+              $ref: '#/definitions/models.ResponseError'
+          '500':
+            description: Internal Server Error
+            schema:
+              $ref: '#/definitions/models.ResponseError'
+  /auth/signup:
+      post:
+        description: API for registering user
+        consumes:
+          - application/json
+        produces:
+          - application/json
+        tags:
+          - auth
+        summary: Create a new user
+        parameters:
+          - description: user
+            name: user
+            in: body
+            required: true
+            schema:
+              $ref: '#/definitions/models.UserModel'
+        responses:
+          '200':
+            description: OK
+          '404':
+            description: Not Found
+            schema:
+              $ref: '#/definitions/models.ResponseError'
+          '500':
+            description: Internal Server Error
+            schema:
+              $ref: '#/definitions/models.ResponseError'
+  /auth/signin:
+      post:
+        description: API to login user
+        consumes:
+          - application/json
+        produces:
+          - application/json
+        tags:
+          - auth
+        summary: To login user 
+        parameters:
+          - description: user
+            name: user
+            in: body
+            required: true
+            schema:
+              $ref: '#/definitions/models.UserModel'
+        responses:
+          '200':
+            description: OK
+          '404':
+            description: Not Found
+            schema:
+              $ref: '#/definitions/models.ResponseError'
+          '500':
+            description: Internal Server Error
+            schema:
+              $ref: '#/definitions/models.ResponseError'
+  '/user/{id}':
+    get:
+      description: API for getting specific user
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - user
+      summary: Get specific user
+      parameters:
+         - schema:
+            type: number
+            minimum: 1
+            default: 1
+            description: page
+            name: page
+            in: query
+         - schema:
+            type: number
+            minimum: 1
+            maximum: 100
+            default: 20
+            description: limit
+            name: limit
+            in: query
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralResponseModel'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /apply-confirmation:
+    get:
+      description: API to apply to create confirmation
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Confirmation
+      summary: API to apply to create confirmation
+      parameters:
+        - schema:
+            type: number
+            minimum: 1
+          description: task_id
+          name: task_id
+          required: true
+          in: query
+        - schema:
+            type: string
+          description: platform
+          name: platform
+          in: query
+      responses:
+          '200':
+            description: OK
+            schema:
+              $ref: '#/definitions/models.GeneralMyGovResponse'
+          '404':
+            description: Not Found
+            schema:
+              $ref: '#/definitions/models.ResponseError'
+          '500':
+            description: Internal Server Error
+            schema:
+              $ref: '#/definitions/models.ResponseError'
+  /apply-confirmation/refusal:
+    patch:
+      description: API for creating notification of refusal
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Confirmation
+      summary: Create a new refusal
+      parameters:
+        - description: refusal
+          name: refusal
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.GeneralNotificationRefusalRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralCreateResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /apply-confirmation/issue:
+    patch:
+      description: API to make a notification to integrated platforms
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Confirmation
+      summary: API to make  a notification to integrated platforms
+      parameters:
+        - description: confirmation
+          name: confirmation
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.GeneralNotificationIssueRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralCreateResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+    
+  /apply-confirmation/redirect:
+    patch:
+      description: API to make a notification about payment redirect
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Confirmation
+      summary: API to make a notification about payment redirect
+      parameters:
+        - description: confirmation
+          name: confirmation
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.GeneralNotificationIssueRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralCreateResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /apply-confirmation/formation:
+    post:
+      description: API to make a notification of formation
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Confirmation
+      summary: API to make a notification of formation
+      parameters:
+        - description: confirmation
+          name: confirmation
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.GeneralNotificationIssueRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralCreateResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /extension-confirmation:
+    get:
+      description: API to apply for extension of confirmation
+      consumes:
+          - application/json
+      produces:
+          - application/json
+      tags:
+          - Confirmation
+      summary: API to apply for extension of confirmation
+      parameters:
+        - schema:
+            type: number
+            minimum: 1
+          description: task_id
+          name: task_id
+          required: true
+          in: query
+        - schema:
+            type: string
+          description: platform
+          name: platform
+          in: query
+      responses:
+          '200':
+            description: OK
+            schema:
+              $ref: '#/definitions/models.GeneralMyGovResponse'
+          '404':
+            description: Not Found
+            schema:
+              $ref: '#/definitions/models.ResponseError'
+          '500':
+            description: Internal Server Error
+            schema:
+              $ref: '#/definitions/models.ResponseError'
+  /extension-confirmation/refusal:
+    patch:
+      description: API for creating notification of refusal
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Confirmation
+      summary: Create a new refusal
+      parameters:
+        - description: notification
+          name: notification
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.GeneralNotificationRefusalRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralCreateResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /extension-confirmation/issue:
+    patch:
+      description: API for to make a notification to integrated platforms
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Confirmation
+      summary: API to make  a notification to integrated platforms
+      parameters:
+        - description: confirmation
+          name: confirmation
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.GeneralNotificationRefusalRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralCreateResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+    
+  /extension-confirmation/redirect:
+    patch:
+      description: API to make a notification about payment redirect
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Confirmation
+      summary: API to make a notification about payment redirect
+      parameters:
+        - description: confirmation
+          name: confirmation
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.GeneralNotificationIssueRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralCreateResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /extension-confirmation/formation:
+    post:
+      description: API for to make a notification of formation
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Confirmation
+      summary: for to make a notification of formation
+      parameters:
+        - description: formation
+          name: formation
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.GeneralNotificationIssueRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralCreateResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /renewal-confirmation:
+    get:
+      description: API for getting all users
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      tags:
+      - Confirmation
+      summary: API to get all users
+      parameters:
+      - schema:
+          type: number
+          minimum: 1
+        description: task_id
+        name: task_id
+        required: true
+        in: query
+      - schema:
+          type: string
+        description: platform
+        name: platform
+        in: query
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralMyGovResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /renewal-confirmation/acceptance:
+    patch:
+      description: API to give a notification about acceptance of application
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Confirmation
+      summary: API to give a notification about acceptance of application
+      parameters:
+        - description: region
+          name: region
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.GeneralNotificationRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CreateRegionResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  
+  /renewal-confirmation/refusal:
+    patch:
+      description: API for creating refusal
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Confirmation
+      summary: Create a new refusal
+      parameters:
+        - description: refusal
+          name: refusal
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.RefusalModel'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralCreateResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /renewal-confirmation/issue:
+    patch:
+      description: API for to make a notification to integrated platforms
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Confirmation
+      summary: API to make  a notification to integrated platforms
+      parameters:
+        - description: confirmation
+          name: confirmation
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.GeneralNotificationRefusalRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralCreateResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+    
+  /renewal-confirmation/formation:
+    post:
+      description: API to make a notification of formation
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Confirmation
+      summary: API to make a notification of formation
+      parameters:
+        - description: confirmation
+          name: confirmation
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.GeneralNotificationIssueRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralCreateResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /termination-confirmation:
+    get:
+      description: API for getting all users
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      tags:
+      - Confirmation
+      summary: API to get all users
+      parameters:
+      - schema:
+          type: number
+          minimum: 1
+        description: task_id
+        name: task_id
+        required: true
+        in: query
+      - schema:
+          type: string
+        description: platform
+        name: platform
+        in: query
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralMyGovResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /termination-confirmation/acceptance:
+    patch:
+      description: API to give a notification about acceptance of application
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Confirmation
+      summary: API to give a notification about acceptance of application
+      parameters:
+        - description: confirmation
+          name: confirmation
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.GeneralNotificationRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CreateRegionResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /termination-confirmation/absence:
+    patch:
+      description: To make a notification of absence of confirmation
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Confirmation
+      summary: To make a notification of absence of confirmation
+      parameters:
+        - description: confirmation
+          name: confirmation
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.GeneralNotificationIssueRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralCreateResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /termination-confirmation/notice:
+    patch:
+      description: To make a notification on notice about termination
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Confirmation
+      summary: To make a notification on notice about termination
+      parameters:
+        - description: refusal
+          name: refusal
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.GeneralNotificationIssueRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralCreateResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /apply-permission:
+    get:
+      description: API to create an application
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Permission
+      summary: API to create an application
+      parameters:
+      - schema:
+          type: number
+          minimum: 1
+        description: task_id
+        name: task_id
+        required: true
+        in: query
+      - schema:
+          type: string
+        description: platform
+        name: platform
+        in: query
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralMyGovResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /apply-permission/acceptance:
+    patch:
+      description: API to give a notification about acceptance of application
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Permission
+      summary: API to give a notification about acceptance of application
+      parameters:
+        - description: permission
+          name: permission
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.GeneralNotificationRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CreateRegionResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+    
+  /apply-permission/refusal:
+    patch:
+      description: API to make a notification on refusal
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Permission
+      summary: API to make a notification on refusal
+      parameters:
+        - description: permission
+          name: permission
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.GeneralNotificationRefusalRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralCreateResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /apply-permission/issue:
+    patch:
+      description: API to make a notification on issuing
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Permission
+      summary: API to make a notification on issuing
+      parameters:
+        - description: permission
+          name: permission
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.GeneralNotificationIssueRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralCreateResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError' 
+  /apply-permission/redirect:
+    patch:
+      description: API to make a notification about payment redirect
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Permission
+      summary: API to make a notification about payment redirect
+      parameters:
+        - description: permission
+          name: permission
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.GeneralNotificationIssueRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralCreateResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError' 
+  /apply-permission/formation:
+    post:
+      description: API to make a notification of formation
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Permission
+      summary: API to make a notification of formation
+      parameters:
+        - description: permission
+          name: permission
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.GeneralNotificationIssueRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralCreateResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /extension-permission:
+    get:
+      description: API for getting all users
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Permission
+      summary: API to get all users
+      parameters:
+      - schema:
+          type: number
+          minimum: 1
+        description: task_id
+        name: task_id
+        required: true
+        in: query
+      - schema:
+          type: string
+        description: platform
+        name: platform
+        in: query
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralMyGovResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /extension-permission/acceptance:
+    patch:
+      description: API to give a notification about acceptance of application
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Permission
+      summary: API to give a notification about acceptance of application
+      parameters:
+        - description: permission
+          name: permission
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.GeneralNotificationRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CreateRegionResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+   
+  /extension-permission/refusal :
+    patch:
+      description: To make a notification of refusal
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Permission
+      summary: To make a notification of refusal
+      parameters:
+        - description: permission
+          name: permission
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.GeneralNotificationRefusalRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralCreateResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /extension-permission/issue:
+    patch:
+      description: To make a notification of refusal
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Permission
+      summary: To make a notification of refusal
+      parameters:
+        - description: permission
+          name: permission
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.GeneralNotificationRefusalRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralCreateResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /extension-permission/redirect:
+    patch:
+      description: API to make a notification about payment redirect
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Permission
+      summary: API to make a notification about payment redirect
+      parameters:
+        - description: permission
+          name: permission
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.GeneralNotificationIssueRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralCreateResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError' 
+  /extension-permission/formation:
+    post:
+      description: API to make a notification of formation
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Permission
+      summary: API to make a notification of formation
+      parameters:
+        - description: formation
+          name: formation
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.GeneralNotificationIssueRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralCreateResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /renewal-permission:
+    get:
+      description: API to create an application of renewal permission
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Permission
+      summary: API to create an application of renewal permission
+      parameters:
+      - schema:
+          type: number
+          minimum: 1
+        description: task_id
+        name: task_id
+        required: true
+        in: query
+      - schema:
+          type: string
+        description: platform
+        name: platform
+        in: query
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralMyGovResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /renewal-permission/acceptance:
+    patch:
+      description: API to give a notification about acceptance of application
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Permission
+      summary: API to give a notification about acceptance of application
+      parameters:
+        - description: region
+          name: region
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.GeneralNotificationRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CreateRegionResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+    
+  /renewal-permission/refusal:
+    patch:
+      description: API for creating notification of refusal
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Permission
+      summary: Create a new notification of refusal
+      parameters:
+        - description: notification of refusal
+          name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.GeneralNotificationRefusalRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralCreateResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /renewal-permission/issue:
+    patch:
+      description: API to make a notification to integrated platforms
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Permission
+      summary: API to make  a notification to integrated platforms
+      parameters:
+        - description: permission
+          name: permission
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.GeneralNotificationRefusalRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralCreateResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+    
+  /renewal-permission/formation:
+    post:
+      description: API to make a notification of formation
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Permission
+      summary: API to make a notification of formation
+      parameters:
+        - description: permission
+          name: permission
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.GeneralNotificationIssueRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralCreateResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /termination-permission:
+    get:
+      description: API for getting all users
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Permission
+      summary: API to get all users
+      parameters:
+      - schema:
+          type: number
+          minimum: 1
+        description: task_id
+        name: task_id
+        required: true
+        in: query
+      - schema:
+          type: string
+        description: platform
+        name: platform
+        in: query
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralMyGovResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /termination-permission/acceptance:
+    patch:
+      description: API to give a notification about acceptance of application
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Permission
+      summary: API to give a notification about acceptance of application
+      parameters:
+        - description: region
+          name: region
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.GeneralNotificationRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CreateRegionResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /termination-permission/absence :
+    patch:
+      description: API to make a notification of absence permission certificate 
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - refusal
+      summary: API to make a notification of absence permission certificate 
+      parameters:
+        - description: refusal
+          name: refusal
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.GeneralNotificationIssueRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralCreateResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+  /termination-permission/notice: 
+    patch:
+      description: To make a notification on notice about termination
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Permission
+      summary: To make a notification on notice about termination
+      parameters:
+        - description: permission
+          name: permission
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/models.GeneralNotificationIssueRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GeneralCreateResponse'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ResponseError'
+definitions:
+  models.ApplicationModel:
+    type: object
+    properties:
+      external_id:
+        type: number
+      organization:
+        type: string
+      operator_org:
+        type: string
+      application_type:
+        type: string
+        enum:
+          - new
+          - extend
+          - reissue
+          - cancel
+      application_status:
+        type: string
+        enum:
+          - new
+          - process
+          - given
+          - completed
+          - cancelled
+          - refused
+          - payment
+      application_number:
+        type: string
+      applicant_fullname:
+        type: string
+      recipient_fullname:
+        type: string
+      application_info:
+        type: string
+      payment_type:
+        type: string
+      payment:
+        type: string
+      payment_copy:
+        type: string
+      payment_currency:
+        type: string
+      mid_number:
+        type: string
+      mid_info:
+        type: string
+      decision_cert_given_number:
+        type: string
+      decision_deny_reason:
+        type: string
+      invoice_initial_payment:
+        type: string
+      decision_cert_refusal_reason:
+        type: string
+      decision_application_refusal_reason:
+        type: string
+      decision_application_refusal_decision:
+        type: string
+      decision_company_termination_reason:
+        type: string
+      changes:
+        type: string
+      application_date:
+        format: date
+        type: string
+      comission_date:
+        format: date
+        type: string
+      application_accepted_date:
+        format: date
+        type: string
+      payment_date:
+        format: date
+        type: string
+      mid_date:
+        format: date
+        type: string
+      mid_given_date:
+        format: date
+        type: string
+      mid_come_to_uzb_date:
+        format: date
+        type: string
+      decision_cert_given_date:
+        format: date
+        type: string
+      decision_deny_reason_date:
+        format: date
+        type: string
+      decision_cert_refusal_date:
+        format: date
+        type: string
+      decision_application_refusal_date:
+        format: date
+        type: string
+      decision_company_termination_date:
+        format: date
+        type: string
+      changes_date:
+        format: date
+        type: string
+      company_id:
+        format: uuid
+        type: string
+      foreign_expert_id:
+        format: uuid
+        type: string
+      created_at:
+        type: string
+        format: date
+      updated_at:
+        type: string
+        format: date
+    required:
+      - application_number
+      - application_date
+      - application_accepted_date
+      - applicant_fullname
+      - recipient_fullname
+  models.CompanyModel:
+    type: object
+    properties:
+      external_id:
+        type: string
+      legal_form:
+        type: string
+      ifut:
+        type: string
+      company_reg_number:
+        type: string
+      company_code:
+        type: string
+      application_type:
+        type: string
+        enum:
+          - legal
+          - physical
+      government_decision:
+        type: string
+      company_name:
+        type: string
+      employees:
+        type: string
+      foreign:
+        type: string
+      legal_address:
+        type: string
+      location_address:
+        type: string
+      other_location:
+        type: string
+      telephone:
+        type: string
+      fax:
+        type: string
+      email:
+        type: string
+      account_number:
+        type: string
+      mfo:
+        type: string
+      bank:
+        type: string
+      inn:
+        type: string
+      district:
+        type: string
+      director_fullname:
+        type: string
+      director_passport_number:
+        type: string
+      director_position:
+        type: string
+      director_passport_copy:
+        type: string
+      director_citizenship:
+        type: string
+      director_inn:
+        type: string
+      director_phone:
+        type: string
+      foreign_workers_max:
+        type: string
+      foreign_workers_specialty:
+        type: string
+      additional_info:
+        type: string
+      government_decision_date:
+        type: string
+        format: date
+      created_at:
+        type: string
+        format: date
+      updated_at:
+        type: string
+        format: date
+    required:
+      
+  models.ForeignExpertModel:
+    type: object
+    properties:
+      external_id:
+        type: string
+      fullname:
+        type: string
+      photo:
+        type: string
+      passport_fullname:
+        type: string
+      birth_place:
+        type: string
+      gender:
+        type: string
+        enum:
+          - male
+          - female
+      passport_number:
+        type: string
+      passport_number_old:
+        type: string
+      passport_copy:
+        type: string
+      foreign_address:
+        type: string
+      degree:
+        type: string
+      speciality:
+        type: string
+        enum:
+        - high
+        - qualified
+        - compatriot
+        - worker
+        - teacher
+      university:
+        type: string
+      work_experience:
+        type: string
+      labour_contract:
+        type: string
+      phone:
+        type: string
+      email:
+        type: string
+      last_job:
+        type: string
+      employer:
+        type: string
+      employer_activity_type:
+        type: string
+      employer_passport_copy:
+        type: string
+      employer_info_copy:
+        type: string
+      salary:
+        type: string
+      position:
+        type: string
+      appearence_in_uzb:
+        type: string
+      visa_type:
+        type: string
+      visa_number:
+        type: string
+      visa_copy:
+        type: string
+      full_address:
+        type: string
+      district:
+        type: string
+      certificate_absence_infection:
+        type: string
+      birth_date:
+        type: string
+        format: date
+      visa_expiry_date:
+        type: string
+        format: date
+      created_at:
+        type: string
+        format: date
+      updated_at:
+        type: string
+        format: date
+      company_id:
+        type: string
+        format: uuid
+      country_id:
+        type: string
+        format: uuid
+      region_id:
+        type: string
+        format: uuid
+    required:
+      - passport_fullname
+      - birth_place
+      - birth_date
+      - gender
+      - passport_number
+      - speciality
+      - visa_type
+      - visa_number
+      - visa_expiry_date
+  models.CountryModel:
+    type: object
+    properties:
+      parent_id:
+        type: string
+      name:
+        type: string
+      code:
+        type: string
+    required:
+      - name
+      - code
+      - parent_id
+  models.RoleModel:
+    type: object
+    properties:
+      name:
+        type: string
+    required:
+      - name
+  models.UpdatedFieldsModel:
+    type: object
+    properties:
+      field_name:
+        type: string
+      value_old:
+        type: string
+      value_new:
+        type: string
+      created_at:
+        type: string
+        format: date
+      updated_at:
+        type: string
+        format: date
+      action_history_id:
+        type: string
+        format: uuid
+    required:
+      - field_name
+      - value_old
+      - value_new
+  models.actionHistoryModel:
+    type: object
+    properties:
+      teble_name:
+        type: string
+        enum:
+          - application
+          - foreign_expert
+          - company
+      action:
+        type: string
+        enum:
+          - receive
+          - deny
+          - terminate
+          - redirect
+          - formate
+          - update
+    required:
+      - table_name
+      - action
+  models.RegionModel:
+    type: object
+    properties:
+      name:
+        type: string
+      code:
+        type: string
+    required:
+      - name
+      - code
+  models.UserModel:
+    type: object
+    properties:
+      external_id:
+        type: number
+      name:
+        type: string
+      password:
+        type: string
+        format: password
+    required:
+      - name
+      - password
+  models.RefusalModel:
+    type: object
+    properties:
+      external_id:
+        type: number
+      reason_text:
+        type: string 
+      reason_info:
+        type: string 
+    required:
+      - reason_text
+      - reason_info
+  models.OkonxModel:
+    type: object
+    properties:
+      external_id:
+        type: number
+      text_id:
+        type: string
+      text:
+        type: string
+      info:
+        type: string
+    required:
+      - text_id
+      - text
+      - info
+  models.CurrencyModel:
+    type: object
+    properties:
+      name:
+        type: string
+      code:
+        type: string
+    required:
+      - name
+      - code
+  models.CertificateModel:
+    type: object
+    properties:
+      status:
+        type: string
+      number:
+        type: string
+      refusal_reason:
+        type: string
+      termination_reason:
+        type: string
+      start_date:
+        type: string
+        format: date
+      end_date:
+        type: string
+        format: date
+      given_date:
+        type: string
+        format: date
+      refusal_reason_date:
+        type: string
+        format: date
+      termination_reason_date:
+        type: string
+        format: date
+      renewal_date:
+        type: string
+        format: date
+      created_at:
+        type: string
+        format: date
+      updated_at:
+        type: string
+        format: date
+    required:
+      - number
+      - start_date
+      - end_date
+      - given_date
+  models.CreateApplicationResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+      id:
+        type: number
+  models.GetAllApplicationsResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+      count:
+        type: number
+      data:
+        type: object
+  models.GetApplicationResponseModel:
+    type: object
+    properties:
+      success:
+        type: boolean
+      application_id:
+        type: number
+      data:
+        type: object
+  models.GetAllCompaniesResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+      count:
+        type: number
+      data:
+        type: object
+  models.GetCompanyResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+      company_id:
+        type: number
+      data:
+        type: object
+  models.UpdateCompanyResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+      company_id:
+        type: number
+  models.DeleteCompanyResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+  models.CreateCountryResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+      id:
+        type: number
+  models.GetAllCountriesResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+      count:
+        type: number
+      data:
+        type: object
+  models.GetCountryResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+      Country_id:
+        type: number
+      data:
+        type: object
+  models.UpdateCountryResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+      Country_id:
+        type: number
+  models.DeleteCountryResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+  models.CreateDistrictResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+      id:
+        type: number
+  models.GetAllDistrictsResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+      count:
+        type: number
+      data:
+        type: object
+  models.GetDistrictResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+      District_id:
+        type: number
+      data:
+        type: object
+  models.UpdateDistrictResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+      District_id:
+        type: number
+  models.DeleteDistrictResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+  models.CreateForeignExpertResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+      id:
+        type: number
+  models.GetAllForeignExpertsResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+      count:
+        type: number
+      data:
+        type: object
+  models.GetForeignExpertResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+      foreign_expert_id:
+        type: number
+      data:
+        type: object
+  models.UpdateForeignExpertResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+      foreign_expert_id:
+        type: number
+  models.DeleteForeignExpertResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+  models.CreateRegionResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+      id:
+        type: number
+  models.GetAllRegionsResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+      count:
+        type: number
+      data:
+        type: object
+  models.GetRegionResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+      region_id:
+        type: number
+      data:
+        type: object
+  models.UpdateRegionResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+      region_id:
+        type: number
+  models.DeleteRegionResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+  models.ResponseError:
+    type: object
+    properties:
+      success:
+        type: boolean
+        default: false
+      error:
+        type: object
+  models.ResponseDatabaseError:
+    type: object
+    properties:
+      success:
+        type: boolean
+        default: false
+      error:
+        type: object
+  models.ResponseOK:
+    type: object
+    properties:
+      message:
+        type: object
+  models.GetAllUsersResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+      count:
+        type: number
+      data:
+        type: object
+  models.GetUserResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+      user_id:
+        type: number
+      data:
+        type: object
+  models.ApplyPermission:
+    type: object
+    properties:
+      task:
+        type: object
+        properties:
+          id: 
+            type: number
+          status: 
+            type: string
+          created_date: 
+            type: string
+            format: date
+          last_update: 
+            type: string
+            format: date
+          current_node: 
+            type: string
+          version_code: 
+            type: string
+          from_operator: 
+            type: boolean
+          operator_org: 
+            type: string
+      entities:
+        type: object
+        properties: 
+        PermissionForeignLabor:
+          type: object
+          properties: 
+              id: 
+                label:
+                  type: string
+                value: 
+                  type: number
+                real_value: 
+                  type: number
+              type_licence: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              readme_permission_foreign_labor: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              accept: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              brief_description_activities: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              legal_address: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              bank_name: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              mfo: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              okonx: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              legal_phone: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              fax: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              head_phone: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              payment_status: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              cancellation_reason_licence: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              email: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              legal_head_name: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              bank_address: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              legal_company_inn: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              legal_kopf: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              legal_company_name: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              old_number_of_confirmation: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              old_number_of_licence: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              cancellation_reason_confirmation: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              authority_id: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              application_migrant: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              notification_of_payment_status: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              notification_for_user: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              name_of_authorized_person: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              reason_of_reject: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              user_type: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              individual_tin: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              full_name: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              phone: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              invoice_pament: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              comment: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              permission_file: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              confirmation_file: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              reason_of_reject_text: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              test: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              district_id: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              region_id: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              eds_for_organization_new: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              eds_new: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              billing_new: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              profession_new: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              numb_attracted_foreign_nationals_new: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              deadline_issuing_new: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              deadline_issuing_passport_new: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              passport_series_number_new: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              citizenship_new: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              head_organization_new: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              info_employer_new: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              authorization_registration_number_new: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              full_name_head_new: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              reason_refusal_new: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              registration_number_new: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              permit_notification_new: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              notice_cceptance_application_new: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              specialties_foreign_citizens: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              number_foreign_nationals_new: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              telephone_numbers_head_new: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              location_address_production_new: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              bank_account_new: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              oked_new: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              total_number_employees_new: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              main_activities_new: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              email_address_new: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              telephone_number_new: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              address_new: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              passport_series_number: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              notifications: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              legal_form_new: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              date_previously_issued_permit: 
+              label: 
+                type: string
+              value: 
+                type: string
+                format: date
+              real_value: 
+                type: string
+              series_number_issued_permission: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              support: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              reason: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              reason_for_renewal: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              notification_payment_issuing_confirmation: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              notice_absence_permission: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              termination_notice: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              reason_termination: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+              copy_passport_inta: 
+                  label: 
+                    type: string
+                  value: 
+                    type: string
+                  real_value: 
+                    type: string
+  models.ExtensionConfirmation:
+    type: object
+    properties:
+      task: 
+        id: 
+          type: number
+        status: 
+          type: string
+        created_date: 
+          type: string
+          format: date
+        last_update: 
+          type: string
+          format: date
+        current_node: 
+          type: string
+        version_code: 
+          type: string
+        from_operator: 
+          type: string
+        operator_org: 
+          type: string
+      entities:
+        type: object
+        properties: 
+        ExtensionConfirmationRightWork:
+          type: object
+          properties: 
+          email_address: 
+            label: 
+              type: string
+            value: 
+              type: string`
+            real_value: 
+              type: string`
+          telephone_number: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          address_residence: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          number_type_visa_omioge: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          info_previous_stay: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          proposed_position: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          estimated_wages_regularity: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          info_employer_type_activity: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          last_place_work: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          experience_declared_specialty_diploma: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          education_specialty: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          gender_male_female: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          citizenship: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          place_year_birth: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          passport_series_number: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          fio_passport: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          category_foreign_citizen: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          kopf: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          district: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          region: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          user_type: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          registration_date_previously_confirmation: 
+          label: 
+            type: string
+          value: 
+            type: string
+            format: date
+          real_value: 
+            type: string
+            format: date
+          number_previously_confirmation: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          confirmation_valid_professional_activity: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          foreign_citizen_status: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          head_organization: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          end_date_validation_period: 
+            label: 
+              type: string
+            value: 
+              type: string
+              format: date
+            real_value: 
+              type: string
+              format: date
+          validation_start_date: 
+            label: 
+              type: string
+            value: 
+              type: string
+              format: date
+            real_value: 
+              type: string
+              format: date
+          info_employer_name_address_pass: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          pass_number_foreign_person: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          fio_foreign_person: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          foreign_nationality: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          registration_number_confirmation: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          failure_notice: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          confirmation_notification: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          conclusion: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          notice_acceptance_consideration: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          payment: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          copy_employer_passport_qualified: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          brief_info_employer: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          documents_confirming_qualifications: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          absence_hiv_infection: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          foreign_worke_confirming_remuneration: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          photo_sm: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          copy_entry_visa: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          copy_foreign_passport: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          questionnaire_foreign_citizen: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          introduced: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          tel_num_head_organization: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          location_mailing_address: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          name_servicing_bank: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          bank_account: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          oked: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          mfo: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          total_foreign_workers: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          main_activities: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          offer_readme: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          notice_consideration: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          reject_reason: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          edc_applicant: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          edc_authority: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          offer: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          agree: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          ind_tin: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          email: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          passport_number: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          passport_issue_date: 
+            label: 
+              type: string
+            value: 
+              type: string
+              format: date
+            real_value: 
+              type: string
+              format: date
+          permit_address: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          phone: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          birthday: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          full_name: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          legal_entity_phone_number: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          legal_head_tin: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          legal_head_name: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          legal_entity_address: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          legal_entity_email: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          legal_entity_name: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          legal_entity_tin: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          authority_id: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          id: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          notification_payment_issuing_confirmation: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+          foreign_citizen_status_user: 
+            label: 
+              type: string
+            value: 
+              type: string
+            real_value: 
+              type: string
+  models.RenewalPermission:
+    type: object
+    properties:
+      task:
+        id:
+          type: number
+        status:
+          type: string
+        created_date:
+          type: string
+          format: date
+        last_update:
+          type: string
+          format: date
+        current_node:
+          type: string
+        version_code:
+          type: string
+        from_operator:
+          type: boolean
+        operator_org:
+          type: string
+      entities:
+        type: object
+        properties:
+        PermissionForeignLabor:
+          type: object
+          properties:
+          id:
+            label:
+              type: string
+            value:
+              type: number
+            real_value:
+              type: number
+          type_licence:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          readme_permission_foreign_labor:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          accept:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          brief_description_activities:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          legal_address:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          bank_name:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          mfo:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          okonx:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          legal_phone:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          fax:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          head_phone:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          payment_status:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          cancellation_reason_licence:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          email:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          legal_head_name:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          bank_address:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          legal_company_inn:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          legal_kopf:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          legal_company_name:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          old_number_of_confirmation:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          old_number_of_licence:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          cancellation_reason_confirmation:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          authority_id:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          application_migrant:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          notification_of_payment_status:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          notification_for_user:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          name_of_authorized_person:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          reason_of_reject:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          user_type:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          individual_tin:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          full_name:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          phone:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          invoice_pament:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          comment:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          permission_file:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          confirmation_file:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          reason_of_reject_text:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          test:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          district_id:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          region_id:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          eds_for_organization_new:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          eds_new:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          billing_new:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          profession_new:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          numb_attracted_foreign_nationals_new:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          deadline_issuing_new:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          deadline_issuing_passport_new:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          passport_series_number_new:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          citizenship_new:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          head_organization_new:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          info_employer_new:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          authorization_registration_number_new:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          full_name_head_new:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          reason_refusal_new:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          registration_number_new:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          permit_notification_new:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          notice_cceptance_application_new:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          specialties_foreign_citizens:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          number_foreign_nationals_new:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          telephone_numbers_head_new:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          location_address_production_new:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          bank_account_new:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          oked_new:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          total_number_employees_new:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          main_activities_new:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          email_address_new:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          telephone_number_new:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          address_new:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          passport_series_number:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          notifications:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          legal_form_new:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          date_previously_issued_permit:
+            label:
+              type: string
+            value:
+              type: string
+              format: date
+            real_value:
+              type: string
+              format: date
+          series_number_issued_permission:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          support:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          reason:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          reason_for_renewal:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          notification_payment_issuing_confirmation:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          notice_absence_permission:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          termination_notice:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          reason_termination:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          copy_passport_inta:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+  models.ApplyConfirmation:
+    type: object
+    properties:
+      task:
+        id:
+          type: number
+        status:
+          type: string
+        created_date:
+          type: string
+          format: date
+        last_update:
+          type: string
+          format: date
+        current_node:
+          type: string
+        version_code:
+          type: string
+        from_operator:
+          type: string
+        operator_org:
+          type: string
+      entities:
+        type: object
+        properties:
+        ObtainingConfirmationRightWork:
+          type: object
+          properties:
+          anketa:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          district_id:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          region_id:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          valid_professional_activity:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          foreign_citizen_status:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          head_organization:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          end_date_validation_period:
+            label:
+              type: string
+            value:
+              type: string
+              format: date
+            real_value:
+              type: string
+              format: date
+          validation_start_date:
+            label:
+              type: string
+            value:
+              type: string
+              format: date
+            real_value:
+              type: string
+              format: date
+          information_about_employer:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          passport_number_foreign_person:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          full_name_foreign_person:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          foreign_nationality:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          registration_number_confirmation:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          failure_notice:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          category_foreign_citizen:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          confirmation_notification:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          conclusion:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          notice_cceptance_application_new:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          billing_new:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          copy_employer_passport:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          information_employer:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          documents_qualifications_foreign_citizen:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          certificate_absence_infection:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          draft_labor_contract_confirming:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          photo:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          copy_entry_visa:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          copy_foreign_citizens_passport:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          intraduced:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          name_servicing_bank:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          bank_account_new:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          oked_new:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          mfo:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          telephone_numbers_head_new:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          location_address_production_new:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          total_number_employees_new:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          main_activities_new:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          notice_consideration:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          reject_reason:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          edc_applicant:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          edc_authority:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          offer:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          agree:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          ind_tin:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          email:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          passport_number:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          permit_address:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          user_type:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          phone:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          full_name:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          kopf:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          legal_head_tin:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          legal_head_name:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          legal_entity_address:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          legal_entity_email:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          legal_entity_name:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          legal_entity_tin:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          authority_id:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          id:
+            label:
+              type: string
+            value:
+              type: string
+              format: date
+            real_value:
+              type: string
+              format: date
+          email_address:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          telephone_number:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          address_residence:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          number_type_visa_omioge:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          info_previous_stay:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          proposed_position:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          estimated_wages_regularity:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          info_employer_type_activity:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          last_place_work:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          experience_declared_specialty_diploma:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          education_specialty:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          gender_male_female:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          citizenship:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          place_year_birth:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          fio_passport:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          notification_payment_issuing_confirmation:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          foreign_citizen_status_user:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          passport_number_foreign_person_gos:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+  models.RenewalConfirmation:
+    type: object
+    properties:
+      task:
+        id:
+          type: number
+        status:
+          type: string
+        created_date:
+          type: string
+          format: date
+        last_update:
+          type: string
+          format: date
+        current_node:
+          type: string
+        version_code:
+          type: string
+        from_operator:
+          type: boolean
+        operator_org:
+          type: string
+      entities:
+        type: object
+        properties:
+        ExtensionConfirmationRightWork:
+          type: object
+          properties:
+          email_address:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          telephone_number:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          address_residence:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          number_type_visa_omioge:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          info_previous_stay:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          proposed_position:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          estimated_wages_regularity:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          info_employer_type_activity:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          last_place_work:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          experience_declared_specialty_diploma:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          education_specialty:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          gender_male_female:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          citizenship:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          place_year_birth:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          passport_series_number:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          fio_passport:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          category_foreign_citizen:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          kopf:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          district:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          region:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          user_type:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          registration_date_previously_confirmation:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          number_previously_confirmation:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          confirmation_valid_professional_activity:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          foreign_citizen_status:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          head_organization:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          end_date_validation_period:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          validation_start_date:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          info_employer_name_address_pass:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          pass_number_foreign_person:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          fio_foreign_person:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          foreign_nationality:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          registration_number_confirmation:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          failure_notice:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          confirmation_notification:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          conclusion:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          notice_acceptance_consideration:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          payment:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          copy_employer_passport_qualified:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          brief_info_employer:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          documents_confirming_qualifications:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          absence_hiv_infection:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          foreign_worke_confirming_remuneration:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          photo_sm:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          copy_entry_visa:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          copy_foreign_passport:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          questionnaire_foreign_citizen:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          introduced:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          tel_num_head_organization:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          location_mailing_address:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          name_servicing_bank:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          bank_account:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          oked:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          mfo:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          total_foreign_workers:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          main_activities:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          offer_readme:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          notice_consideration:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          reject_reason:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          edc_applicant:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          edc_authority:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          offer:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          agree:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          ind_tin:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          email:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          passport_number:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          passport_issue_date:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          permit_address:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          phone:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          birthday:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          full_name:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          legal_entity_phone_number:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          legal_head_tin:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          legal_head_name:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          legal_entity_address:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          legal_entity_email:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          legal_entity_name:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          legal_entity_tin:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          authority_id:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          id:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          notification_payment_issuing_confirmation:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          foreign_citizen_status_user:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+  models.CancellationModel:
+    type: object
+    properties:
+      task:
+        id:
+          type: number
+        status:
+          type: string
+        created_date:
+          type: string
+          format: date
+        last_update:
+          type: string
+          format: date
+        current_node:
+          type: string
+        version_code:
+          type: string
+        from_operator:
+          type: string
+        operator_org:
+          type: string
+      entities:
+        type: object
+        properties:
+        CancellationConfirmationRightWork:
+          type: object
+          properties:
+          notification_absence_confirmation:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          termination_notice:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          district:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          region:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          tel_num_head_organization:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          location_mailing_address:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          reason_termination:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          registration_date_previously_issued:
+            label:
+              type: string
+            value:
+              type: string
+              format: date
+            real_value:
+              type: string
+              format: date
+          series_number_previously_issued:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          notice_consideration:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          reject_reason:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          edc_applicant:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          edc_authority:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          offer:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          agree:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          ind_tin:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          email:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          passport_number:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          passport_issue_date:
+            label:
+              type: string
+            value:
+              type: string
+              format: date
+            real_value:
+              type: string
+              format: date
+          permit_address:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          user_type:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          phone:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          birthday:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          full_name:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          kopf:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          legal_entity_phone_number:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          legal_head_tin:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          legal_head_name:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          legal_entity_address:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          legal_entity_email:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          legal_entity_name:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          legal_entity_tin:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          authority_id:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+          id:
+            label:
+              type: string
+            value:
+              type: number
+            real_value:
+              type: number
+          ser_num_pass_fore_citi:
+            label:
+              type: string
+            value:
+              type: string
+            real_value:
+              type: string
+  models.GeneralNotificationRequest':
+      type: object
+      properties:
+        task_id:
+          type: string
+        application_id:
+          type: string
+          format: uuid
+  models.GeneralGeneralNotificationRefusalRequest':
+    type: object
+    properties:
+      task_id:
+        type: string
+      notification:
+        type: string
+  models.GeneralResponseModel:
+      type: object
+      properties:
+        success:
+          type: boolean
+        count:
+          type: number
+        data:
+          type: object
+  models.GeneralReportResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+      data:
+        type: object
+  models.GeneralGetOneResponseModel:
+    type: object
+    properties:
+      success:
+        type: boolean
+      data:
+        type: object
+  models.UpdateApplicationResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+      application_id:
+        type: number
+  models.CreateCompanyResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+      id:
+        type: number
+  models.GeneralCreateResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+      id:
+        type: number
+      data:
+        type: object
+  models.GeneralMyGovResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
