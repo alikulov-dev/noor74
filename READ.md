@@ -4,10 +4,11 @@ README v1.0.0 / 26 OCT 2021
   Title:  NOOR SERVICE
 
   Aliqulov Azamat              - project manager and software developer
+  Ochilov Shoxruz              - project manager and froent-end developer
 
 ## Overview
 
-The project is labour migration management system. This software offers several different management features such as create, read, update and delete, it designs for keep track of all migration process over the country. Below, you will be able to get familiar with our awesome project with further details.
+The project is noor service, that is a young start-up for noor company. NOOR service is provided sevecies for human like cleaning and soing somthing
 
 ## Context
 

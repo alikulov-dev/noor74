@@ -17,7 +17,7 @@ const imgSchema = new mongoose.Schema({
     }
   });
 
-const clientSchema = new mongoose.Schema({
+const orderSchema = new mongoose.Schema({
   name: {
     type: String,
     // required: [true, 'Please, write your name at least'],
@@ -26,77 +26,31 @@ const clientSchema = new mongoose.Schema({
     max: 25
   },
   img: [imgSchema],
-  first_name: {
-    type: String,
-    required: [true, 'Please, write your name at least'],
-    trim: true,
-    min: 4,
-    max: 25
+  tasker_id: { 
+    type: mongoose.Schema.Types.ObjectId, ref: 'User' 
   },
-  last_name: {
+  user_id: { 
+    type: mongoose.Schema.Types.ObjectId, ref: 'Client' 
+  },
+  payment_uz: {
     type: String,
     default: null,
     trim: true,
     min: 4,
     max: 25
   },
-  father_name: {
+  status: {
     type: String,
-    default: null,
-    trim: true,
-    min: 4,
-    max: 25
-  },
-  email: {
-    type: String,
-    trim: true,
-    lowercase: true,
-    // unique: true,
-    // required: 'Email address is required',
-    // validate: [validateEmail, 'Please fill a valid email address'],
-    // match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
-  },
-  phone: {
-    type: String,
-    trim: true,
-    lowercase: true,
-    unique: true,
-    // Validation succeeds! Phone number is defined
-    // and fits `DDD-DDD-DDDD`
-    validate: {
-      validator: function (v) {
-        return /\d{3}-\d{3}-\d{4}/.test(v);
-      },
-      message: props => `${props.value} is not a valid phone number!`
-    },
-    // required: [true, 'Admin phone number required'],
-    min: 7,
-    max: 20
-  },
-  password: {
-    type: String,
-    required: true,
-    trim: true,
-    min: 4
-  },
-  last_login: { type: Date, default: Date.now },
-  role: {
-    type: String,
+    default: 'disabled',
     enum: {
-      values: ['tasker', 'client'],
+      values: ['disabled', 'progress', 'finished', 'archived'],
       message: '{VALUE} is not supported'
     }
   },
-  token: {
-    type: String,
-    min: 4
-  },
+  location: { longitude: String, atitude: String }
 },{ timestamps: true });
 
-clientSchema.virtual('fullName').get(function() {
-  return this.first_name + ' ' + this.last_name;
-});
 
-clientSchema.index({ email: 1}); // schema level
+orderSchema.index({ name: 1}); // schema level
 
-module.exports = mongoose.model("Client", clientSchema);
+module.exports = mongoose.model("Order", orderSchema);

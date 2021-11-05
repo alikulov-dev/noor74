@@ -5,8 +5,16 @@ const jwt = require('jsonwebtoken');
 const Client = require("../db/models/client");
 const Joi = require('joi');
 const bcrypt=require('bcrypt')
+const rateLimit = require('../helpers/request_limitter');
 // const multer=require('multer')
 
+//request limitter
+// const createAccountLimiter = rateLimit({
+//   windowMs: 1 * 60 * 1000, // 1 minut window
+//   max: 5, // start blocking after 5 requests
+//   message:
+//     "Too many accounts created from this IP, please try again after an hour"
+// });
 
 const blogSchema = Joi.object({
   title: Joi.string()
@@ -43,6 +51,17 @@ router.post("/register", async (req, res) => {
     //Encrypt user password
     encryptedPassword = await bcrypt.hash(password, 10);
 
+    //client validated
+    // const client = {
+    //   first_name:first_name,
+    //   last_name:last_name,
+    //   father_name:father_name,
+    //   email: email.toLowerCase(), // sanitize: convert email to lowercase
+    //   phone:phone,
+    //   password: encryptedPassword,
+    //   role:role
+    // };
+    // const error=cli
     //genrrating img url
     // const img = upload.single("myFile")
     // const img = new clientSchema({ name: name,url: url})
@@ -75,7 +94,7 @@ router.post("/register", async (req, res) => {
   }
   // Our register logic ends here
 });
-router.post("/login", async (req, res) => {
+router.post("/login", rateLimit, async (req, res) => {
 
   // Our login logic starts here
   try {
@@ -110,5 +129,17 @@ router.post("/login", async (req, res) => {
     console.log(err);
   }
   // Our register logic ends here
+});
+router.get("/list", async (req, res) => {
+
+  // this only needed for development, in deployment is not real function
+  try {
+
+    const client = await Client.find();
+
+    res.status(400).send(client);
+  } catch (err) {
+    console.log(err);
+  }
 });
 module.exports = router;
