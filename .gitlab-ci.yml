@@ -7,7 +7,6 @@ build website:
   image: node
   script:
     - npm install
-    # - npm start
   artifacts:
     paths:
       - ./public
