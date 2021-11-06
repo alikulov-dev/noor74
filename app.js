@@ -2,6 +2,7 @@ require('./db/database')
 const express = require("express");
 const cors = require('cors');
 const dotenv = require("dotenv");
+const helmet = require("helmet");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const http = require('http');
@@ -20,7 +21,8 @@ dotenv.config();
 const app = express();
 const PORT = process.env.NODE_PORT || 8080;
 app.use(morgan("dev"));
-app.use(cors());
+// app.use(cors());
+// app.use(helmet());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 // require('./docs/endpoints')(app)
@@ -31,7 +33,8 @@ app.use('/uploads', express.static(__dirname + '/uploads'));
 
 
 // app.use(taskRoutes);
-app.use('/image',auth, img_routes);
+// app.use('/image',auth, img_routes);
+app.use('/image', img_routes);
 app.use('/client', client_routes);
 app.use('/welcome', (req, res) => {
     res.json({ name: "Hello" })

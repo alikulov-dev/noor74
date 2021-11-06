@@ -21,11 +21,11 @@ router.post('/', upload.single('myFile'), async (req, res, next) => {
         return next("hey error")
     }
 
-
+    // cosnole.log(file)
     const imagepost = new img({
         image: file.path
     })
-    console.log(file.path)
+    console.log(file)
     const savedimage = await imagepost.save()
     res.json(savedimage)
 
