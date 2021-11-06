@@ -2,7 +2,7 @@ stages:
   - build
   # - test
 
-build website:
+build:
   stage: build
   image: node
   script:
