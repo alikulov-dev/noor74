@@ -33,25 +33,25 @@ const clientSchema = Joi.object({
     .trim()
     .min(4)
     .max(25),
-    father_name: Joi.string()
+  father_name: Joi.string()
     .trim()
     .min(4)
     .max(25),
   email: Joi.string()
-  .trim()
-  .email({ minDomainSegments: 2, tlds: { allow: ['ru', 'com'] } })
-    .min(10)
-    .max(200),
-    phone: Joi.string()
     .trim()
     .email({ minDomainSegments: 2, tlds: { allow: ['ru', 'com'] } })
-      .min(10)
-      .max(200),
-      email: Joi.string()
-      .trim()
-      .email({ minDomainSegments: 2, tlds: { allow: ['ru', 'com'] } })
-        .min(10)
-        .max(200)
+    .min(10)
+    .max(200),
+  phone: Joi.string()
+    .trim()
+    .email({ minDomainSegments: 2, tlds: { allow: ['ru', 'com'] } })
+    .min(10)
+    .max(200),
+  email: Joi.string()
+    .trim()
+    .email({ minDomainSegments: 2, tlds: { allow: ['ru', 'com'] } })
+    .min(10)
+    .max(200)
 });
 // const upload = multer({ dest: "public/files" });
 
@@ -64,7 +64,7 @@ router.post("/register", async (req, res) => {
     const { first_name, last_name, father_name, email, name, url, phone, password, role } = req.body;
     // Validate user input
     if (!(email && password && first_name && last_name)) {
-      return res.status(400).send("All input is required");
+      return res.status(400).json({ code: 400, message: 'All input is required' });
     }
 
     // check if user already exist
@@ -72,7 +72,7 @@ router.post("/register", async (req, res) => {
     const oldUser = await Client.findOne({ email });
 
     if (oldUser) {
-      return res.status(409).json({ code: 409, message: 'User Already Exist. Please Login' });
+      return res.status(400).json({ code: 400, message: 'User Already Exist. Please Login' });
       // return res.status(409).send("User Already Exist. Please Login");
     }
 
@@ -102,10 +102,10 @@ router.post("/register", async (req, res) => {
     // validation
     const error = baseclient.validateSync();
     if (error) {
-      return res.status(409).json({ code: 409, message: 'Validatioan error', error:error });
+      return res.status(409).json({ code: 409, message: 'Validatioan error', error: error });
       // return res.status(409).send("Validatioan error");
     }
-    const client = await baseclient.save();    
+    const client = await baseclient.save();
     // Create token
     const token = jwt.sign(
       { client_id: client._id, role: client.role },
@@ -123,7 +123,7 @@ router.post("/register", async (req, res) => {
     res.status(201).json(client);
   } catch (err) {
     userLogger.error(err);
-    console.log(err);
+    // console.log(err);
   }
   // Our register logic ends here
 });
@@ -162,7 +162,7 @@ router.get("/login", rateLimit, async (req, res) => {
     return res.status(200).json({ code: 200, message: 'Client does not exist and deleted' });
   } catch (err) {
     userLogger.error(err);
-    console.log(err);
+    // console.log(err);
   }
   // Our register logic ends here
 });
@@ -175,10 +175,11 @@ router.get("/list", async (req, res) => {
 
     const client = await Client.find();
 
-    return res.status(200).json({ code: 200, message: 'Client does not exist and deleted', clientlist: client });
+    return res.status(202).json({ code: 202, list_of_clients: client });
+
   } catch (err) {
     userLogger.error(err);
-    console.log(err);
+    // console.log(err);
   }
 });
 
@@ -205,16 +206,16 @@ router.post("/update/:id", async (req, res) => {
   };
 
   const baseclient = new Client(newValues);
-    // validation
-    const error = baseclient.validateSync();
-    if (error) {
-      return res.status(409).json({ code: 409, message: 'Validatioan error', error:error });
-      // return res.status(409).send("Validatioan error");
-    }
+  // validation
+  const error = baseclient.validateSync();
+  if (error) {
+    return res.status(409).json({ code: 409, message: 'Validatioan error', error: error });
+    // return res.status(409).send("Validatioan error");
+  }
   // img update logic starts here 
 
   // img update logic ends here 
-  
+
   // if (value.error) {
   //   return res.status(422).json({
   //     message: 'Validation error.',
@@ -232,9 +233,6 @@ router.post("/update/:id", async (req, res) => {
 
   // this only needed for development, in deployment is not real function
   const client = await Client.findOneAndUpdate({ _id: id }, newValues);
-
-
-
 
   if (client.err) {
     return res.status(500).json({ code: 500, message: 'There as not any clients yet', error: err })
