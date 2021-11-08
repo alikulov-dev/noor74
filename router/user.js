@@ -2,14 +2,14 @@ const express = require('express');
 const router = express.Router();
 // const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
-const Joi = require('joi');
+// const Joi = require('joi');
 const bcrypt = require('bcrypt')
 const checkForHexRegExp = new RegExp("^[0-9a-fA-F]{24}$");
 const rateLimit = require('../helpers/request_limitter');
-const { userLogger, paymentLogger } = require('../helpers/logger');
+const { userLogger } = require('../helpers/logger');
 // const {logger} = require('../helpers/logger');
 // const multer=require('multer')
-const Client = require("../db/models/client");
+const User = require("../db/models/user");
 
 //request limitter
 // const createAccountLimiter = rateLimit({
@@ -19,43 +19,43 @@ const Client = require("../db/models/client");
 //     "Too many accounts created from this IP, please try again after an hour"
 // });
 
-const clientSchema = Joi.object({
-  username: Joi.string()
-    .trim()
-    .min(4)
-    .max(25),
-  first_name: Joi.string()
-    .required()
-    .trim()
-    .min(4)
-    .max(25),
-  last_name: Joi.string()
-    .trim()
-    .min(4)
-    .max(25),
-  father_name: Joi.string()
-    .trim()
-    .min(4)
-    .max(25),
-  email: Joi.string()
-    .trim()
-    .email({ minDomainSegments: 2, tlds: { allow: ['ru', 'com'] } })
-    .min(10)
-    .max(200),
-  phone: Joi.string()
-    .trim()
-    .email({ minDomainSegments: 2, tlds: { allow: ['ru', 'com'] } })
-    .min(10)
-    .max(200),
-  email: Joi.string()
-    .trim()
-    .email({ minDomainSegments: 2, tlds: { allow: ['ru', 'com'] } })
-    .min(10)
-    .max(200)
-});
+// const userSchema = Joi.object({
+//   username: Joi.string()
+//     .trim()
+//     .min(4)
+//     .max(25),
+//   first_name: Joi.string()
+//     .required()
+//     .trim()
+//     .min(4)
+//     .max(25),
+//   last_name: Joi.string()
+//     .trim()
+//     .min(4)
+//     .max(25),
+//   father_name: Joi.string()
+//     .trim()
+//     .min(4)
+//     .max(25),
+//   email: Joi.string()
+//     .trim()
+//     .email({ minDomainSegments: 2, tlds: { allow: ['ru', 'com'] } })
+//     .min(10)
+//     .max(200),
+//   phone: Joi.string()
+//     .trim()
+//     .email({ minDomainSegments: 2, tlds: { allow: ['ru', 'com'] } })
+//     .min(10)
+//     .max(200),
+//   email: Joi.string()
+//     .trim()
+//     .email({ minDomainSegments: 2, tlds: { allow: ['ru', 'com'] } })
+//     .min(10)
+//     .max(200)
+// });
 // const upload = multer({ dest: "public/files" });
 
-//( /client/register) in order to register client
+//( /User/register) in order to register User
 router.post("/register", async (req, res) => {
 
   // Our register logic starts here
@@ -69,7 +69,7 @@ router.post("/register", async (req, res) => {
 
     // check if user already exist
     // Validate if user exist in our database
-    const oldUser = await Client.findOne({ email });
+    const oldUser = await User.findOne({ email });
 
     if (oldUser) {
       return res.status(400).json({ code: 400, message: 'User Already Exist. Please Login' });
@@ -79,7 +79,7 @@ router.post("/register", async (req, res) => {
     //Encrypt user password
     encryptedPassword = await bcrypt.hash(password, 10);
 
-    //client validated
+    //User validated
     const value = {
       first_name: first_name,
       last_name: last_name,
@@ -92,35 +92,35 @@ router.post("/register", async (req, res) => {
     // const error=cli
     //genrrating img url
     // const img = upload.single("myFile")
-    // const img = new clientSchema({ name: name,url: url})
-    // Create client in our database
+    // const img = new UserSchema({ name: name,url: url})
+    // Create User in our database
     //add image if it exist
     if (name || url) {
       value.img = { name: name, url: url }
     }
-    const baseclient = new Client(value);
+    const baseUser = new User(value);
     // validation
-    const error = baseclient.validateSync();
+    const error = baseUser.validateSync();
     if (error) {
       return res.status(409).json({ code: 409, message: 'Validatioan error', error: error });
       // return res.status(409).send("Validatioan error");
     }
-    const client = await baseclient.save();
+    const user = await baseUser.save();
     // Create token
     const token = jwt.sign(
-      { client_id: client._id, role: client.role },
+      { user_id: user._id, role: user.role },
       "123456",
       {
         expiresIn: "2h",
       }
     );
     // save user token
-    client.token = token;
+    user.token = token;
     // if (name && url) {
-    //   client.img = { name: name, url: url }
+    //   User.img = { name: name, url: url }
     // }
     // return new user
-    res.status(201).json(client);
+    res.status(201).json(user);
   } catch (err) {
     userLogger.error(err);
     // console.log(err);
@@ -128,7 +128,7 @@ router.post("/register", async (req, res) => {
   // Our register logic ends here
 });
 
-//( /client/login) in order to login client
+//( /User/login) in order to login User
 router.get("/login", rateLimit, async (req, res) => {
 
   // Our login logic starts here
@@ -141,12 +141,12 @@ router.get("/login", rateLimit, async (req, res) => {
       return res.status(400).send("All input is required");
     }
     // Validate if user exist in our database
-    const client = await Client.findOne({ email });
+    const user = await User.findOne({ email });
 
-    if (client && (await bcrypt.compare(password, client.password))) {
+    if (user && (await bcrypt.compare(password, user.password))) {
       // Create token
       const token = jwt.sign(
-        { client_id: client._id, role: client.role },
+        { user_id: user._id, role: user.role },
         "123456",
         {
           expiresIn: "2h",
@@ -154,12 +154,12 @@ router.get("/login", rateLimit, async (req, res) => {
       );
 
       // save user token
-      client.token = token;
+      user.token = token;
 
       // user
-      return res.status(200).json(client);
+      return res.status(200).json(user);
     }
-    return res.status(200).json({ code: 200, message: 'Client does not exist and deleted' });
+    return res.status(200).json({ code: 200, message: 'User does not exist and deleted' });
   } catch (err) {
     userLogger.error(err);
     // console.log(err);
@@ -167,20 +167,20 @@ router.get("/login", rateLimit, async (req, res) => {
   // Our register logic ends here
 });
 
-//( /client/list) in order to get list of clients
-router.post("/list", async (req, res) => {
+//( /user/list) in order to get list of Users
+router.get("/list", async (req, res) => {
   let { pageNumber, pageSize } = req.body;
   pageNumber=parseInt(pageNumber);
   pageSize=parseInt(pageSize);
   // this only needed for development, in deployment is not real function
   try {
 
-    const client = await Client.find()
+    const user = await User.find()
       .skip((pageNumber - 1) * pageSize) 
       .limit(pageSize)           
       .sort({ first_name: 1 });
-    // console.log(client)
-    return res.status(202).json({ code: 202, list_of_clients: client });
+    // console.log(User)
+    return res.status(202).json({ code: 202, list_of_Users: user });
 
   } catch (err) {
     userLogger.error(err);
@@ -188,7 +188,7 @@ router.post("/list", async (req, res) => {
   }
 });
 
-//( /client/update/:id) in order to update specific client
+//( /User/update/:id) in order to update specific User
 router.post("/update/:id", async (req, res) => {
 
   const id = req.params.id;
@@ -210,9 +210,9 @@ router.post("/update/:id", async (req, res) => {
     role: role
   };
 
-  const baseclient = new Client(newValues);
+  const baseUser = new User(newValues);
   // validation
-  const error = baseclient.validateSync();
+  const error = baseUser.validateSync();
   if (error) {
     return res.status(409).json({ code: 409, message: 'Validatioan error', error: error });
     // return res.status(409).send("Validatioan error");
@@ -227,27 +227,27 @@ router.post("/update/:id", async (req, res) => {
   //     error: value.error,
   //   });
   // }
-  // const client = await Client.findOne({ _id: id }, (err, client) => {
-  //   client.img.name(name);
+  // const User = await User.findOne({ _id: id }, (err, User) => {
+  //   User.img.name(name);
   // });
-  const img = await Client.find({ _id: id });
+  const img = await User.find({ _id: id });
 
-  if (client.img[0].name != name) {
+  if (User.img[0].name != name) {
     newValues.img = { name: name, url: url }
   }
 
   // this only needed for development, in deployment is not real function
-  const client = await Client.findOneAndUpdate({ _id: id }, newValues);
+  const user = await User.findOneAndUpdate({ _id: id }, newValues);
 
-  if (client.err) {
-    return res.status(500).json({ code: 500, message: 'There as not any clients yet', error: err })
+  if (user.err) {
+    return res.status(500).json({ code: 500, message: 'There as not any Users yet', error: err })
   }
   else {
-    return res.status(200).json({ code: 200, message: 'Client exist and updated', oldclient: client })
+    return res.status(200).json({ code: 200, message: 'User exist and updated', oldUser: user })
   };
 });
 
-//( /client/delete/:id) in order to delete specific client
+//( /User/delete/:id) in order to delete specific User
 router.get("/delete/:id", async (req, res) => {
 
   const id = req.params.id;
@@ -260,17 +260,17 @@ router.get("/delete/:id", async (req, res) => {
   }
 
   // this only needed for development, in deployment is not real function
-  const client = await Client.findOneAndDelete({ _id: id });
+  const user = await User.findOneAndDelete({ _id: id });
 
-  if (client.err) {
-    return res.status(500).json({ code: 500, message: 'There as not any clients yet', error: err })
+  if (user.err) {
+    return res.status(500).json({ code: 500, message: 'There as not any Users yet', error: err })
   }
   else {
-    return res.status(200).json({ code: 200, message: 'Client exist and deleted', deleted_client: client })
+    return res.status(200).json({ code: 200, message: 'User exist and deleted', deleted_User: user })
   };
 });
 
-//( /getone/:id) in order to get specific client
+//( /getone/:id) in order to get specific User
 router.get("/getone/:id", async (req, res) => {
 
   const id = req.params.id;
@@ -283,13 +283,13 @@ router.get("/getone/:id", async (req, res) => {
   }
 
   // this only needed for development, in deployment is not real function
-  const client = await Client.find({ _id: id });
+  const user = await User.find({ _id: id });
 
-  if (client.err) {
-    return res.status(500).json({ code: 500, message: 'There as not any clients yet', error: err })
+  if (user.err) {
+    return res.status(500).json({ code: 500, message: 'There as not any Users yet', error: err })
   }
   else {
-    return res.status(200).json({ code: 200, message: 'Client exist', client: client })
+    return res.status(200).json({ code: 200, message: 'User exist', user: user })
   };
 });
 module.exports = router;

@@ -27,7 +27,7 @@ const doc = {
     securityDefinitions: {
         api_key: {
             type: "apiKey",
-            name: "api_key",
+            name: "access-token",
             in: "header"
         },
         petstore_auth: {

@@ -38,12 +38,12 @@ const locationSchema = new mongoose.Schema({
     unique: true,
     // Validation succeeds! Phone number is defined
     // and fits `DDD-DDD-DDDD`
-    validate: {
-      validator: function (v) {
-        return /\d{3}-\d{3}-\d{4}/.test(v);
-      },
-      message: props => `${props.value} is not a valid phone number!`
-    },
+    // validate: {
+    //   validator: function (v) {
+    //     return /\d{3}-\d{3}-\d{4}/.test(v);
+    //   },
+    //   message: props => `${props.value} is not a valid phone number!`
+    // },
     // required: [true, 'Admin phone number required'],
     min: 7,
     max: 20
@@ -62,10 +62,10 @@ const locationSchema = new mongoose.Schema({
     lowercase: true,
     unique: true,
     // Validation succeeds! Phone number is defined
-    // and fits `DDD-DDD-DDDD`
+    // and fits `DD-DDD-DDDD`
     validate: {
       validator: function (v) {
-        return /\d{3}-\d{3}-\d{4}/.test(v);
+        return /\d{2}-\d{3}-\d{4}/.test(v);
       },
       message: props => `${props.value} is not a valid phone number!`
     },

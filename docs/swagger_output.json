@@ -20,7 +20,7 @@
   "securityDefinitions": {
     "api_key": {
       "type": "apiKey",
-      "name": "api_key",
+      "name": "access-token",
       "in": "header"
     },
     "petstore_auth": {
@@ -40,6 +40,165 @@
     "application/json"
   ],
   "paths": {
+    "/client/register": {
+      "post": {
+        "tags": [
+          "Client"
+        ],
+        "description": "client haqida api",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "first_name": {
+                  "example": "any"
+                },
+                "last_name": {
+                  "example": "any"
+                },
+                "father_name": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                },
+                "name": {
+                  "example": "any"
+                },
+                "url": {
+                  "example": "any"
+                },
+                "phone": {
+                  "example": "any"
+                },
+                "password": {
+                  "example": "any"
+                },
+                "role": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário encontrado.",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Xatolik roy berdi"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/client/list": {
+      "post": {
+        "tags": [
+          "Client"
+        ],
+        "description": "client haqida api",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "pageNumber": {
+                  "example": "any"
+                },
+                "pageSize": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário encontrado.",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Xatolik roy berdi"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/client/delete/{id}": {
+      "get": {
+        "tags": [
+          "Client"
+        ],
+        "description": "client haqida api",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário encontrado.",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Xatolik roy berdi"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/client/getone/{id}": {
+      "get": {
+        "tags": [
+          "Client"
+        ],
+        "description": "client haqida api",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário encontrado.",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Xatolik roy berdi"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
     "/welcome": {
       "get": {
         "tags": [
@@ -55,9 +214,9 @@
           },
           {
             "name": "id",
-            "description": "ID do usuário.",
             "in": "query",
-            "type": "string"
+            "type": "string",
+            "description": "ID haqida"
           }
         ],
         "responses": {
@@ -66,6 +225,9 @@
             "schema": {
               "$ref": "#/definitions/User"
             }
+          },
+          "400": {
+            "description": "Xatolik roy berdi"
           },
           "404": {
             "description": "Not Found"
