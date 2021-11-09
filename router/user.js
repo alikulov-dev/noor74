@@ -61,7 +61,7 @@ router.post("/register", async (req, res) => {
   // Our register logic starts here
   try {
     // Get user input
-    const { first_name, last_name, father_name, email, name, url, phone, password, role } = req.body;
+    const { first_name, last_name, father_name, email, img_id, phone, password, role } = req.body;
     // Validate user input
     if (!(email && password && first_name && last_name)) {
       return res.status(400).json({ code: 400, message: 'All input is required' });
@@ -85,6 +85,7 @@ router.post("/register", async (req, res) => {
       last_name: last_name,
       father_name: father_name,
       email: email.toLowerCase(), // sanitize: convert email to lowercase
+      img_id:img_id,
       phone: phone,
       password: encryptedPassword,
       role: role
@@ -95,9 +96,9 @@ router.post("/register", async (req, res) => {
     // const img = new UserSchema({ name: name,url: url})
     // Create User in our database
     //add image if it exist
-    if (name || url) {
-      value.img = { name: name, url: url }
-    }
+    // if (name || url) {
+    //   value.img = { name: name, url: url }
+    // }
     const baseUser = new User(value);
     // validation
     const error = baseUser.validateSync();
@@ -199,13 +200,14 @@ router.post("/update/:id", async (req, res) => {
       error: id,
     });
   }
-  const { first_name, last_name, father_name, email, name, url, phone, password, role } = req.body;
+  const { first_name, last_name, father_name, email, img_id, phone, password, role } = req.body;
   // const value = authorSchema.validate(req.body);
   const newValues = {
     first_name: first_name,
     last_name: last_name,
     father_name: father_name,
     email: email.toLowerCase(), // sanitize: convert email to lowercase
+    img_id:img_id,
     phone: phone,
     role: role
   };
@@ -230,11 +232,11 @@ router.post("/update/:id", async (req, res) => {
   // const User = await User.findOne({ _id: id }, (err, User) => {
   //   User.img.name(name);
   // });
-  const img = await User.find({ _id: id });
+  // const img = await User.find({ _id: id });
 
-  if (User.img[0].name != name) {
-    newValues.img = { name: name, url: url }
-  }
+  // if (User.img[0].name != name) {
+  //   newValues.img = { name: name, url: url }
+  // }
 
   // this only needed for development, in deployment is not real function
   const user = await User.findOneAndUpdate({ _id: id }, newValues);

@@ -55,7 +55,11 @@ const clientSchema = new mongoose.Schema({
     // validate: [validateEmail, 'Please fill a valid email address'],
     // match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
   },
-  img: [imgSchema],
+  img_id: {
+    type: String,
+    trim: true,
+    min: 4
+  },
   phone: {
     type: String,
     trim: true,
@@ -75,7 +79,6 @@ const clientSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
     trim: true,
     min: 4
   },
@@ -86,6 +89,9 @@ const clientSchema = new mongoose.Schema({
       values: ['tasker', 'client'],
       message: '{VALUE} is not supported'
     }
+  },
+  status: {
+    type: String
   },
   token: {
     type: String,

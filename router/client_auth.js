@@ -10,6 +10,7 @@ const { userLogger, paymentLogger } = require('../helpers/logger');
 // const {logger} = require('../helpers/logger');
 // const multer=require('multer')
 const Client = require("../db/models/client");
+const sendMail=require("../helpers/sendemail")
 
 //request limitter
 // const createAccountLimiter = rateLimit({
@@ -61,7 +62,7 @@ router.post("/register", async (req, res) => {
   // Our register logic starts here
   try {
     // Get user input
-    const { first_name, last_name, father_name, email, name, url, phone, password, role } = req.body;
+    const { first_name, last_name, father_name, email, img_id, phone, password, role } = req.body;
     // Validate user input
     if (!(email && password && first_name && last_name)) {
       return res.status(400).json({ code: 400, message: 'All input is required' });
@@ -75,7 +76,8 @@ router.post("/register", async (req, res) => {
       return res.status(400).json({ code: 400, message: 'User Already Exist. Please Login' });
       // return res.status(409).send("User Already Exist. Please Login");
     }
-
+    var code = Math.floor(1000 + Math.random() * 9000);
+    const emaile=sendMail(email,code);
     //Encrypt user password
     encryptedPassword = await bcrypt.hash(password, 10);
 
@@ -86,7 +88,9 @@ router.post("/register", async (req, res) => {
       father_name: father_name,
       email: email.toLowerCase(), // sanitize: convert email to lowercase
       phone: phone,
+      img_id:img_id,
       password: encryptedPassword,
+      status:code,
       role: role
     };
     // const error=cli
@@ -95,9 +99,9 @@ router.post("/register", async (req, res) => {
     // const img = new clientSchema({ name: name,url: url})
     // Create client in our database
     //add image if it exist
-    if (name || url) {
-      value.img = { name: name, url: url }
-    }
+    // if (name || url) {
+    //   value.img = { name: name, url: url }
+    // }
     const baseclient = new Client(value);
     // validation
     const error = baseclient.validateSync();
@@ -106,6 +110,8 @@ router.post("/register", async (req, res) => {
       // return res.status(409).send("Validatioan error");
     }
     const client = await baseclient.save();
+    
+    // console.log(emaile)
     // Create token
     const token = jwt.sign(
       { client_id: client._id, role: client.role },
@@ -129,7 +135,7 @@ router.post("/register", async (req, res) => {
 });
 
 //( /client/login) in order to login client
-router.get("/login", rateLimit, async (req, res) => {
+router.post("/login", rateLimit, async (req, res) => {
 
   // Our login logic starts here
   try {
@@ -199,7 +205,7 @@ router.post("/update/:id", async (req, res) => {
       error: id,
     });
   }
-  const { first_name, last_name, father_name, email, name, url, phone, password, role } = req.body;
+  const { first_name, last_name, father_name, email,img_id, name, url, phone, password, role } = req.body;
   // const value = authorSchema.validate(req.body);
   const newValues = {
     first_name: first_name,
@@ -207,6 +213,7 @@ router.post("/update/:id", async (req, res) => {
     father_name: father_name,
     email: email.toLowerCase(), // sanitize: convert email to lowercase
     phone: phone,
+    img_id:img_id,
     role: role
   };
 
@@ -230,11 +237,12 @@ router.post("/update/:id", async (req, res) => {
   // const client = await Client.findOne({ _id: id }, (err, client) => {
   //   client.img.name(name);
   // });
-  const img = await Client.find({ _id: id });
+  // const img = await Client.find({ _id: id });
 
-  if (client.img[0].name != name) {
-    newValues.img = { name: name, url: url }
-  }
+  // console.log(img.img[0]);
+  // if (img.img[0].name != name) {
+  //   newValues.img = { name: name, url: url }
+  // }
 
   // this only needed for development, in deployment is not real function
   const client = await Client.findOneAndUpdate({ _id: id }, newValues);
@@ -248,7 +256,7 @@ router.post("/update/:id", async (req, res) => {
 });
 
 //( /client/delete/:id) in order to delete specific client
-router.get("/delete/:id", async (req, res) => {
+router.delete("/delete/:id", async (req, res) => {
 
   const id = req.params.id;
 
@@ -261,9 +269,12 @@ router.get("/delete/:id", async (req, res) => {
 
   // this only needed for development, in deployment is not real function
   const client = await Client.findOneAndDelete({ _id: id });
-
+  // console.log(client) 
+  if(!client) {
+    return res.status(500).json({ code: 500, message: 'There as not any clients yet', error: client })
+  };
   if (client.err) {
-    return res.status(500).json({ code: 500, message: 'There as not any clients yet', error: err })
+    return res.status(500).json({ code: 500, message: 'There as not any clients yet', error: client })
   }
   else {
     return res.status(200).json({ code: 200, message: 'Client exist and deleted', deleted_client: client })
@@ -281,9 +292,33 @@ router.get("/getone/:id", async (req, res) => {
       error: id,
     });
   }
-
+  // console.log(req)
+  // userLogger.info(req.header)
   // this only needed for development, in deployment is not real function
   const client = await Client.find({ _id: id });
+
+  if (client.err) {
+    return res.status(500).json({ code: 500, message: 'There as not any clients yet', error: err })
+  }
+  else {
+    return res.status(200).json({ code: 200, message: 'Client exist', client: client })
+  };
+});
+//( /auth/:id) in order to get specific client
+router.patch("/auth/:id", async (req, res) => {
+
+  const id = req.params.id;
+  // id valid chech
+  if (!checkForHexRegExp.test(id)) {
+    return res.status(422).json({
+      message: 'Id is not valid',
+      error: id,
+    });
+  }
+  // console.log(req)
+  // userLogger.info(req.header)
+  // this only needed for development, in deployment is not real function
+  const client = await Client.findOneAndUpdate({ _id: id },{status:"verified"});
 
   if (client.err) {
     return res.status(500).json({ code: 500, message: 'There as not any clients yet', error: err })
