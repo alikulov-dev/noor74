@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  database:
+    image: "mongo:latest"
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data_conatiner:/data/db
+    environment:
+      POSTGRES_PASSWORD: "1"
+      POSTGRES_USER: "root"
+    volumes:
+      mongo_data_conatiner:

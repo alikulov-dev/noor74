@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 
-const imgSchema = new mongoose.Schema({
+const imgSchema = new mongoose.Schema({ 
   name: {
     type: String,
-    // required: [false, 'Please, write your name at least'],
+    required: [false, 'Please, write your name at least'],
     trim: true,
     min: 4,
     max: 25
@@ -17,7 +17,7 @@ const imgSchema = new mongoose.Schema({
   }
 });
 
-const userSchema = new mongoose.Schema({
+const clientSchema = new mongoose.Schema({
   username: {
     type: String,
     // required: [true, 'Please, write your name at least'],
@@ -50,10 +50,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     trim: true,
     lowercase: true,
-    // unique: true,
-    // required: 'Email address is required',
-    // validate: [validateEmail, 'Please fill a valid email address'],
-    // match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
+    unique: true,
+    required: 'Email address is required',
+    validate: [validateEmail, 'Please fill a valid email address'],
+    match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
   },
   img_id: {
     type: String,
@@ -79,7 +79,6 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
     trim: true,
     min: 4
   },
@@ -87,20 +86,23 @@ const userSchema = new mongoose.Schema({
   role: {
     type: String,
     enum: {
-      values: ['admin', 'superAdmin'],
+      values: ['tasker', 'client'],
       message: '{VALUE} is not supported'
     }
+  },
+  status: {
+    type: String
   },
   token: {
     type: String,
     min: 4
   },
-}, { timestamps: true });
+},{ timestamps: true });
 
-userSchema.virtual('fullName').get(function () {
+clientSchema.virtual('fullName').get(function() {
   return this.first_name + ' ' + this.last_name;
 });
 
-userSchema.index({ email: 1 }); // schema level
+clientSchema.index({ email: 1}); // schema level
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model("Client", clientSchema);

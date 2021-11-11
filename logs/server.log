@@ -1,6 +1,6 @@
-::ffff:127.0.0.1 - - [17/Oct/2021:10:14:02 +0000] "GET /author HTTP/1.1" 200 35 "-" "got (https://github.com/sindresorhus/got)"
-::ffff:127.0.0.1 - - [17/Oct/2021:10:16:11 +0000] "GET /author/list HTTP/1.1" 200 40422 "-" "got (https://github.com/sindresorhus/got)"
-::ffff:127.0.0.1 - - [17/Oct/2021:10:16:39 +0000] "GET /author/list HTTP/1.1" 200 40422 "-" "got (https://github.com/sindresorhus/got)"
-::ffff:127.0.0.1 - - [17/Oct/2021:10:23:37 +0000] "GET /author/list HTTP/1.1" 200 40422 "-" "got (https://github.com/sindresorhus/got)"
-::ffff:127.0.0.1 - - [17/Oct/2021:10:24:17 +0000] "GET /author/list HTTP/1.1" 200 41950 "-" "got (https://github.com/sindresorhus/got)"
-::ffff:127.0.0.1 - - [17/Oct/2021:10:24:59 +0000] "GET /author/615e94a547e9d15f513fe648 HTTP/1.1" 200 188 "-" "got (https://github.com/sindresorhus/got)"
+{"level":"error","message":"New user created"}
+{"level":"info","message":{"destination":"uploads","encoding":"7bit","fieldname":"myFile","filename":"2021-11-07T13:35:59.571ZScreenshot from 2021-11-04 21-54-51.png","mimetype":"image/png","originalname":"Screenshot from 2021-11-04 21-54-51.png","path":"uploads/2021-11-07T13:35:59.571ZScreenshot from 2021-11-04 21-54-51.png","size":1379418},"timestamp":"2021-11-07 18:35:59"}
+{"level":"info","message":{"destination":"uploads","encoding":"7bit","fieldname":"myFile","filename":"2021-11-07T13:36:18.193ZScreenshot from 2021-11-04 21-54-51.png","mimetype":"image/png","originalname":"Screenshot from 2021-11-04 21-54-51.png","path":"uploads/2021-11-07T13:36:18.193ZScreenshot from 2021-11-04 21-54-51.png","size":1379418},"timestamp":"2021-11-07 18:36:18"}
+{"level":"info","message":{"destination":"uploads","encoding":"7bit","fieldname":"myFile","filename":"2021-11-07T13:49:28.101ZScreenshot from 2021-11-02 11-51-43.png","mimetype":"image/png","originalname":"Screenshot from 2021-11-02 11-51-43.png","path":"uploads/2021-11-07T13:49:28.101ZScreenshot from 2021-11-02 11-51-43.png","size":262295},"timestamp":"2021-11-07 18:49:28"}
+{"level":"error","timestamp":"2021-11-10 22:31:21"}
+{"level":"error","timestamp":"2021-11-10 22:32:25"}
