@@ -4,7 +4,8 @@
     "description": "Blogging website",
     "main": "./app.js",
     "scripts": {
-        "start": "nodemon ./app.js",
+        "start": "node ./app.js",
+        "swagger-autogen": "node ./docs/swagger.js",
         "dev": "PORT=8626 nodemon ./app.js"
     },
     "author": "Aliqulov Azamat <aliqulov@azamat@list.ru>",
@@ -13,12 +14,26 @@
     "devDependencies": {
         "nodemon": "^2.0.13"
     },
+    "engines": {
+    "node": "14.18.0"
+  },
     "dependencies": {
+        "bcrypt": "^5.0.1",
         "body-parser": "^1.19.0",
+        "cors": "^2.8.5",
         "dotenv": "^10.0.0",
         "express": "^4.17.1",
+        "express-rate-limit": "^5.5.0",
+        "helmet": "^4.6.0",
         "http": "0.0.1-security",
+        "joi": "^17.4.2",
+        "jsonwebtoken": "^8.5.1",
         "mongoose": "^6.0.12",
-        "morgan": "^1.10.0"
+        "morgan": "^1.10.0",
+        "multer": "^1.4.3",
+        "path": "^0.12.7",
+        "swagger-autogen": "^2.12.5",
+        "swagger-ui-express": "^4.1.6",
+        "winston": "^3.3.3"
     }
 }
