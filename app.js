@@ -42,7 +42,6 @@ app.use('/welcome', (req, res) => {
     res.json({ name: "Hello" })
 })
 
-app.listen(PORT, (err) => {
-    if (err) { console.log(`Error:${err}`) }
-    console.log(`Running on port ${PORT}`);
+app.listen(process.env.PORT || 5000, function(){
+  console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
 });
