@@ -4,7 +4,7 @@
     "description": "Blogging website",
     "main": "./app.js",
     "scripts": {
-        "start": "nodemon ./app.js",
+        "start": "node ./app.js",
         "swagger-autogen": "node ./docs/swagger.js",
         "dev": "PORT=8626 nodemon ./app.js"
     },
@@ -14,11 +14,13 @@
     "devDependencies": {
         "nodemon": "^2.0.13"
     },
+    "engines": {
+    "node": "14.18.0"
+  },
     "dependencies": {
         "bcrypt": "^5.0.1",
         "body-parser": "^1.19.0",
         "cors": "^2.8.5",
-        "crypto": "^1.0.1",
         "dotenv": "^10.0.0",
         "express": "^4.17.1",
         "express-rate-limit": "^5.5.0",
@@ -29,7 +31,6 @@
         "mongoose": "^6.0.12",
         "morgan": "^1.10.0",
         "multer": "^1.4.3",
-        "nodemailer": "^6.7.0",
         "path": "^0.12.7",
         "swagger-autogen": "^2.12.5",
         "swagger-ui-express": "^4.1.6",
