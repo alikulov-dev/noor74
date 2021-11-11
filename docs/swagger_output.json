@@ -175,6 +175,42 @@
         }
       }
     },
+    "/client/resendlink": {
+      "post": {
+        "tags": [
+          "Client"
+        ],
+        "description": "this api response is list of all clients",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "client services",
+            "schema": {
+              "$ref": "#/definitions/Client"
+            }
+          },
+          "400": {
+            "description": "Xatolik roy berdi"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
     "/client/update/{id}": {
       "post": {
         "tags": [

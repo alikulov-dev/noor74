@@ -60,6 +60,27 @@ module.exports = function (app) {
     return res.status(200).send(data)
 
     }),
+    app.post('/client/resendlink', (req, res) => {
+       // #swagger.tags = ['Client']
+       // #swagger.description = 'this api response is list of all clients'
+
+       let { email } = req.body.email;
+
+
+
+       if (false)
+        return res.status(404).send(false)
+
+       /* #swagger.responses[200] = { 
+              schema: { $ref: "#/definitions/Client" },
+              description: 'client services' 
+       } */
+       /* #swagger.responses[400] = {
+              description: 'Xatolik roy berdi' 
+       } */
+       return res.status(200).send(data)
+
+         }),
     // update elements
     app.post('/client/update/:id', (req, res) => {
        // #swagger.tags = ['Client']
