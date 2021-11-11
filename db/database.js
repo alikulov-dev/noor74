@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost:27017/Blog', {
+mongoose.connect('mongodb+srv://azik:azik@cluster0.dtiq1.mongodb.net/myFirstDatabase?retryWrites=true', {
     connectTimeoutMS: 1000,
     useNewUrlParser: true,
     useUnifiedTopology: true,
