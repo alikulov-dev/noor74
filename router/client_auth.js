@@ -78,6 +78,13 @@ router.post("/register", async (req, res) => {
       return res.status(400).json({ code: 400, message: 'User Already Exist. Please Login' });
       // return res.status(409).send("User Already Exist. Please Login");
     }
+    // Validate phone if user exist in our database
+    const oldPhone = await Client.findOne({ phone });
+
+    if (oldPhone) {
+      return res.status(400).json({ code: 400, message: 'Phone Number Already Exist. Please put another number' });
+      // return res.status(409).send("User Already Exist. Please Login");
+    }
     var code = Math.floor(1000 + Math.random() * 9000);
     //Encrypt user password
     encryptedPassword = await bcrypt.hash(password, 10);
