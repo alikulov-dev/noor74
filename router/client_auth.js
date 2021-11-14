@@ -198,7 +198,7 @@ router.post("/list", async (req, res) => {
   // this only needed for development, in deployment is not real function
   try {
 
-    const client = await Client.find()
+    const client = await Token.find()
     .skip((pageNumber - 1) * pageSize) 
     .limit(pageSize)           
     .sort({ first_name: 1 });
