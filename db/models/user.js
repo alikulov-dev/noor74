@@ -91,6 +91,9 @@ const userSchema = new mongoose.Schema({
       message: '{VALUE} is not supported'
     }
   },
+  status: {
+    type: String
+  },
   token: {
     type: String,
     min: 4
