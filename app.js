@@ -13,7 +13,7 @@ const swaggerDocument = require('./docs/swagger_output.json');
 
 // routers
 const auth=require('./middleware/auth');
-const client_routes = require('./router/client_auth');
+const client_routes = require('./router/client');
 const user_routes = require('./router/user');
 const img_routes = require('./router/img');
 
@@ -22,7 +22,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.NODE_PORT || 8080;
 app.use(morgan("dev"));
-app.use(cors());
+// app.use(cors());
 app.use(helmet());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
@@ -42,6 +42,7 @@ app.use('/welcome', (req, res) => {
     res.json({ name: "Hello" })
 })
 
-app.listen(process.env.PORT || 5000, function(){
-  console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
+app.listen(PORT, (err) => {
+    if (err) { console.log(`Error:${err}`) }
+    console.log(`Running on port ${PORT}`);
 });
