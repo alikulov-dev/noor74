@@ -11,7 +11,7 @@ const { userLogger, paymentLogger } = require('../helpers/logger');
 // const {logger} = require('../helpers/logger');
 // const multer=require('multer')
 const Client = require("../db/models/client");
-const Token = require("../db/models/tokenScheme");
+const Token = require("../db/models/token");
 const sendMail = require("../helpers/sendemail")
 
 //request limitter
@@ -165,7 +165,7 @@ router.post("/login", rateLimit, async (req, res) => {
       return res.status(400).send("All input is required");
     }
     // Validate if user exist in our database
-    const client = await Client.findOne({ email:email,status:'true' });
+    const client = await Client.findOne({ email: email, status: 'true' });
 
     if (client && (await bcrypt.compare(password, client.password))) {
       // Create token
@@ -199,9 +199,9 @@ router.post("/list", async (req, res) => {
   try {
 
     const client = await Client.find()
-    .skip((pageNumber - 1) * pageSize) 
-    .limit(pageSize)           
-    .sort({ first_name: 1 });
+      .skip((pageNumber - 1) * pageSize)
+      .limit(pageSize)
+      .sort({ first_name: 1 });
     // console.log(client)
     return res.status(202).json({ code: 202, list_of_clients: client });
 
@@ -210,9 +210,69 @@ router.post("/list", async (req, res) => {
     // console.log(err);
   }
 });
+//( /client/resetpasswordclient) in order to get list of clients
+router.post('/resetpasswordclient', async (req, res) => {
+  const { email } = req.body;
+  const client = await Client.findOne({ email: email });
+  if (!client) {
+    return res.status(400).json({ code: 400, message: 'Wrong email or no users' });
+    // return res.status(409).send("User Already Exist. Please Login");
+  }
+  var token = new Token({ _clientId: client._id, token: crypto.randomBytes(16).toString('hex') });
+  var error = token.validateSync();
+  if (error) {
+    return res.status(409).json({ code: 409, message: 'Validatioan error', error: error });
+    // return res.status(409).send("Validatioan error");
+  }
+  const teken_save = await token.save();
+  const text = 'Hello ' + client.first_name + ',\n\n' + 'Please verify your account again by clicking the link: \nhttp:\/\/' + req.headers.host + '\/client/resetpassword/confirmation\/' + client.email + '\/' + token.token + '\n\nThank You!\n';
+  // console.log(text);
+  const emaile = sendMail(email, text);
+  return res.status(200).json({ code: 200, message: 'We sent e resent link your ', client: client,text:text });
+});
+//( /client/resetpassword/confirmationp/:email/:token) in order to get list of clients
+router.post('/resetpassword/confirmationp/:email/:token', async (req, res) => {
+  const token = req.params.token;
+  const email = req.params.email;
+  // const password = req.params.password;
+  const  password  = req.body.password;
+  // Validate user input
+  if (!token) {
+    return res.status(400).json({ code: 400, message: 'Input is required' });
+  }
+
+  // check if user already exist
+  // Validate if user exist in our database
+  const tokenClient = await Token.findOne({ token: token });
+
+  if (!tokenClient) {
+    return res.status(400).json({ code: 400, message: 'Your verification link may have expired. Please click on resend for verify your Email.' });
+    // return res.status(409).send("User Already Exist. Please Login");
+  }
+  console.log(password)
+  encryptedPassword = await bcrypt.hash(password, 10);
+  // Validate if user exist in our database
+  const client = await Client.findOneAndUpdate({ _id: tokenClient._clientId, email: req.params.email }, { password: encryptedPassword });
+
+  if (!client) {
+    return res.status(400).json({ code: 400, message: 'We were unable to find a client for this Reset. !' });
+    // return res.status(409).send("User Already Exist. Please Login");
+  }
+
+  // encryptedPassword = await bcrypt.hash(password, 10);
+
+  // const client = await Client.findOne({ _id: tokenClient._clientId, email: req.params.email });
+
+  // client.status = 'true';
+  // const clientSave = await client.save();
+  // if (clientSave.err) {
+  //   return res.status(500).send({ msg: clientSave.err });
+  // }
+  return res.status(200).json({ code: 200, message: 'confirmation success', client: client });
+});
 //( /client/confirmation/:email/:token) in order to get list of clients
-router.get('/confirmation/:email/:token',async (req, res) => {
-  const  token  = req.params.token;
+router.get('/confirmation/:email/:token', async (req, res) => {
+  const token = req.params.token;
   // const { email } = req.params.email;
   // Validate user input
   if (!token) {
@@ -244,9 +304,10 @@ router.get('/confirmation/:email/:token',async (req, res) => {
   }
   return res.status(200).json({ code: 200, message: 'confirmation success', client: client });
 });
+
 //( /client/resendlink) in order to get list of clients
 router.post('/resendlink', async (req, res) => {
-  const  {email}  = req.body;
+  const { email } = req.body;
   const client = await Client.findOne({ email: email });
   if (!client) {
     return res.status(400).json({ code: 400, message: 'Your verification link may have expired. Please click on resend for verify your Email.' });
@@ -258,15 +319,15 @@ router.post('/resendlink', async (req, res) => {
   }
   var token = new Token({ _clientId: client._id, token: crypto.randomBytes(16).toString('hex') });
   var error = token.validateSync();
-    if (error) {
-      return res.status(409).json({ code: 409, message: 'Validatioan error', error: error });
-      // return res.status(409).send("Validatioan error");
-    }
-    const teken_save = await token.save();
-    const text = 'Hello ' + client.first_name + ',\n\n' + 'Please verify your account again by clicking the link: \nhttp:\/\/' + req.headers.host + '\/client/confirmation\/' + client.email + '\/' + token.token + '\n\nThank You!\n';
-    // console.log(text);
-    const emaile = sendMail(email, text);
-    return res.status(200).json({ code: 200, message: 'resend success', client: client });
+  if (error) {
+    return res.status(409).json({ code: 409, message: 'Validatioan error', error: error });
+    // return res.status(409).send("Validatioan error");
+  }
+  const teken_save = await token.save();
+  const text = 'Hello ' + client.first_name + ',\n\n' + 'Please verify your account again by clicking the link: \nhttp:\/\/' + req.headers.host + '\/client/confirmation\/' + client.email + '\/' + token.token + '\n\nThank You!\n';
+  // console.log(text);
+  const emaile = sendMail(email, text);
+  return res.status(200).json({ code: 200, message: 'resend success', client: client });
 });
 //( /client/update/:id) in order to update specific client
 router.post("/update/:id", async (req, res) => {
