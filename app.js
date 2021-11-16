@@ -22,7 +22,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.NODE_PORT || 8080;
 app.use(morgan("dev"));
-// app.use(cors());
+app.use(cors());
 app.use(helmet());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
