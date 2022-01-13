@@ -165,7 +165,7 @@ router.post("/login", rateLimit, async (req, res) => {
       return res.status(400).send("All input is required");
     }
     // Validate if user exist in our database
-    const client = await Client.findOne({ email: email, status: 'true' });
+    const client = await Client.findOne({ email: email });
 
     if (client && (await bcrypt.compare(password, client.password))) {
       // Create token
